@@ -1,13 +1,5 @@
 #include <unistd.h>
 
-static BUF_SIZE = 255;
-
-typedef struct s_page
-{
-	char						content[BUF_SIZE + 1];
-	struct	s_page	*next;
-} t_page;
-
 typedef struct s_bibl
 {
 	int						fd;
@@ -59,12 +51,19 @@ t_page *gen_empty_page()
 	return (page);
 }
 
+
+
 size_t gen_new_page(t_page **page, const int fd)
 {
 	*page = gen_empty_page();
 	if (*page == NULL)
 		return (0);
 	return read(fd, page->content, BUF_SIZE);
+}
+
+ssize_t read_new_page(t_page *dest_page, fd)
+{
+	return read(fd, dest_page->content, BUF_SIZE);
 }
 
 int	fill_bibl(t_bibl *bibl, const int fd)
@@ -115,4 +114,31 @@ int main(void)
 		return ;
 	char *line = get_next_line(fd);
 	return 0;
+}
+
+/*
+size_t fill_page(t_page *bibl, const int fd)
+{	
+	size_t n_pos;
+	ssize_t readed_bytes;
+	
+	if (entry_page == NULL)
+	{
+		readed_bytes = read_fd(&entry_page, fd);
+		if (entry_page == NULL)
+			return ;
+		cursor_page = entry_page;
+	}
+	while (1)
+	{
+		n_pos = ft_strrchr(cursor_page->content[cursor], '\n');
+		if (n_pos != NULL)
+			break ;
+		len_line += readed_bytes;
+		readed_bytes = read_fd(&cursor_page->next, fd);
+		if (cursor_page->next == NULL)
+			break ;
+		cursor_page = cursor_page->next;
+	}
+	cursor = n_pos;
 }
