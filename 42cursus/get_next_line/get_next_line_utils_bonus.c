@@ -2,35 +2,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-t_book *create_book(const int fd)
-{
-	t_book *book;
-
-	book = (t_book *) malloc(sizeof(t_book));
-	if (book == NULL)
-		return (NULL);
-	book->fd = fd;
-	book->entry_page = NULL;
-	book->entry_cursor = NULL;
-	book->len_line = 0;
-	book->next = NULL;
-	return (book);
-}
-
-t_book *get_fd_book(t_book **book, const int fd)
-{
-	while (*book)
-	{
-		if ((*book)->fd == fd)
-			return (*book);
-		book = &(*book)->next;
-	}
-	*book = create_book(fd);
-	return (*book);
-}
-
 void free_page(t_page *page)
 {
+	if (page == NULL)
+		return ;
 	free(page->content);
 	free(page);
 }
@@ -44,17 +19,6 @@ char * ft_strchr(const char *src, const char c)
 		++src;
 	}
 	return (NULL);
-}
-
-void free_pages(t_page *page)
-{
-	t_page *prev;
-	while(page != NULL)
-	{
-		prev = page;
-		page = page->next;
-		free_page(prev);
-	}
 }
 
 t_page *gen_empty_page()
@@ -114,26 +78,3 @@ size_t	read_book(t_page *page, char *cursor, ssize_t *len_line, const int fd)
 	}
 	return (0);
 }
-
-char get_next_c_book(t_page **page, char **cursor)
-{
-	t_page *tmp_page;
-	char c;
-	if (**cursor == 0)
-	{
-		tmp_page = *page;
-    *page = (*page)->next;
-		free_page(tmp_page);
-		if (*page)
-			*cursor = (*page)->content;
-		else
-		{
-			*cursor = NULL;
-			return 0;
-		}
-	}
-	c = **cursor;
-	*cursor = *cursor + 1;
-	return (c);
-}
-

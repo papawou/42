@@ -4,6 +4,8 @@
 
 void free_page(t_page *page)
 {
+	if (page == NULL)
+		return ;
 	free(page->content);
 	free(page);
 }
@@ -17,17 +19,6 @@ char * ft_strchr(const char *src, const char c)
 		++src;
 	}
 	return (NULL);
-}
-
-void free_pages(t_page *page)
-{
-	t_page *prev;
-	while(page != NULL)
-	{
-		prev = page;
-		page = page->next;
-		free_page(prev);
-	}
 }
 
 t_page *gen_empty_page()
@@ -86,26 +77,4 @@ size_t	read_book(t_page *page, char *cursor, ssize_t *len_line, const int fd)
 		cursor = page->content;
 	}
 	return (0);
-}
-
-char get_next_c_book(t_page **page, char **cursor)
-{
-	t_page *tmp_page;
-	char c;
-	if (**cursor == 0)
-	{
-		tmp_page = *page;
-    *page = (*page)->next;
-		free_page(tmp_page);
-		if (*page)
-			*cursor = (*page)->content;
-		else
-		{
-			*cursor = NULL;
-			return 0;
-		}
-	}
-	c = **cursor;
-	*cursor = *cursor + 1;
-	return (c);
 }
