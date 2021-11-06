@@ -67,10 +67,10 @@ ssize_t gen_page(t_page **page, const int fd)
 	return (readed_bytes);
 }
 
-size_t	read_book(t_page *page, char *cursor, size_t *len_line, const int fd)
+size_t	read_book(t_page *page, char *cursor, ssize_t *len_line, const int fd)
 {
 	char		*n_pos;
-	size_t	readed_bytes; // -1 from gen_page ?
+	ssize_t	readed_bytes;
 
 	readed_bytes = *len_line;
 	while (1)
@@ -92,17 +92,15 @@ char get_next_c_book(t_page **page, char **cursor)
 {
 	t_page *tmp_page;
 	char c;
-	if (**cursor == 0) //eop
+	if (**cursor == 0)
 	{
 		tmp_page = *page;
-    *page = (*page)->next; 
-		//free prev_page
+    *page = (*page)->next;
 		free_page(tmp_page);
-		//setup cursor new cursor;
 		if (*page)
 			*cursor = (*page)->content;
 		else
-		{//eop_buff should hit ?
+		{
 			*cursor = NULL;
 			return 0;
 		}

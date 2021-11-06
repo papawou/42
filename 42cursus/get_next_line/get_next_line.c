@@ -6,7 +6,7 @@ char *gen_out(t_page **entry_page, char **entry_cursor, size_t len_out)
 	char	*out;
 	size_t	i;
 
-	if (len_out == 0)
+	if (len_out < 1)
 		return (NULL);
 	out = malloc(len_out + 1);
 	if (out == NULL)
@@ -23,7 +23,7 @@ char	*get_next_line(int fd)
 	static int 		_fd = -1;
 	static t_page *entry_page = NULL;
 	static char   *entry_cursor = NULL;
-	static size_t len_line = 0;
+	static ssize_t len_line = 0;
 	char *out;
 
 	if (_fd != fd)
@@ -48,8 +48,10 @@ char	*get_next_line(int fd)
 	return (out);
 }
 
+/*
 #include <fcntl.h>
 #include <stdio.h>
+
 
 int main(void)
 {
@@ -61,7 +63,10 @@ int main(void)
 	while(line)
 	{
 		printf("%s", line);
+		free(line);
 		line = get_next_line(fd);
 	}
+	get_next_line(-2);
 	return 0;
-}	
+}
+*/
