@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 
-char get_next_c_book(t_page **page, char **cursor)
+char	get_next_c_book(t_page **page, char **cursor)
 {
 	t_page *tmp_page;
 	char c;
