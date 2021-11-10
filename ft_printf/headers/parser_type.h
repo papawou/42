@@ -1,8 +1,6 @@
 #ifndef PARSER_TYPE_H
 # define PARSER_TYPE_H
 
-#include "headers/list.h"
-
 char *parse_c(char c);
 
 char *parse_s(char *s);
@@ -19,6 +17,6 @@ char *parse_X();
 
 char *parse_percent();
 
-char *parse_word(char *s, t_page **page);
+char *parse_word(char *s);
 
 #endif

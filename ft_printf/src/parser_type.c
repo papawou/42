@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <unistd.h>
 #include "headers/parser_format.h"
 
 /*
@@ -22,7 +22,7 @@
 
 */
 
-char *parse_c(char c, t_flags *flags)
+char *parse_c(unsigned char c, t_flags *flags)
 {
 	write(1, &c, 1);
 }
@@ -32,27 +32,37 @@ char *parse_s(char *s, t_flags *flags)
 	size_t len = ft_strlen(s);
 	size_t i = 0;
 
-	if (len < flags->max) //init min max width
+	if (len < flags->max)
 		flags->max = len;
 	if (flags->min < flags->max)
 		flags->min = flags->max;
 	
-	if (pad->justify_left) //add pad char right
+	if (flags->justify_left)
 	{
-		while (i < flags->min - flags->max && ++i)
+		while (i < flags->min - flags->max && ++i) //pad
 			write(1, " ", 1);
-		write(1, s, flags->max);
+		write(1, s, flags->max); //write s
 	}
 	else
 	{
-		write(1, s, flags->max);
-		while (i < flags->min - flags->max && ++i)
+		write(1, s, flags->max); //write s
+		while (i < flags->min - flags->max && ++i) //pad
 			write(1, " ", 1);
 	}
 	return (s + flags->min);
 }
 
-char *parse_p(void *p, t_pad *pad)
+char *parse_di(int n, t_flags *flags)
+{
+	char *s  = q_itoa(n, "0123456789");
+	if (s == NULL)
+		return (NULL);
+	size_t s_len = ft_strlen(s);
+	
+	free(s);
+}
+
+char *parse_p(void *p, t_flags *flags)
 {
 	char *s = q_utoa(p, "0123456789abcdef");
 	if (s == NULL)
@@ -61,14 +71,6 @@ char *parse_p(void *p, t_pad *pad)
 	free(s);
 }
 
-char *parse_di(int n, t_pad *pad)
-{
-	char *s  = q_itoa(n, "0123456789");
-	if (s == NULL)
-		return (NULL);
-	format_s_pad(s, pad);
-	free(s);
-}
 
 char *parse_u(unsigned int *n)
 {
@@ -116,7 +118,7 @@ char *parse_word(char *s, t_page **page)
 char *parse_type(const char *s, va_list ap, t_flags *flags)
 {
 	if (*s == 'c')
-		return parse_c(va_arg(ap, char), flags);
+		return parse_c(va_arg(ap, unsigned char), flags);
 	else if (*s == 's')
 		return parse_s(va_arg(ap, char *), flags);
 	else if (*s == 'p')

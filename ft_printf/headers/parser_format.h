@@ -1,7 +1,8 @@
 #ifndef PARSER_FORMAT_H
 #define PARSER_FORMAT_H
 
-#include <bool.h>
+#include <stdbool.h>
+#include <sys/types.h>
 
 typedef struct s_flags
 {
@@ -11,10 +12,8 @@ typedef struct s_flags
 	bool hash;
 	bool space;
 
-	size_t min;
-	size_t max;
+	int min;
+	int max;
 } t_flags;
-
-char *parse_pad(char *s, t_pad **pad);
 
 #endif

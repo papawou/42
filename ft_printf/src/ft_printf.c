@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include "headers/ft_printf.h"
-#include "headers/list.h"
 #include "headers/parser_format.h"
 #include "headers/parser_type.h"
 
@@ -13,7 +12,6 @@ int ft_printf(const char *s, ...)
 {
 	va_list ap;
 	char		type;
-	t_page	*page = NULL;
 
 	va_start(ap, s);
 	while (*s)
