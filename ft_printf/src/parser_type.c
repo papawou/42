@@ -24,7 +24,20 @@
 
 char *parse_c(unsigned char c, t_flags *flags)
 {
-	write(1, &c, 1);
+	int i = 0;
+
+	if (flags->justify_left)
+	{
+		while (i < flags->min - 1 && ++i) //pad
+			write(1, " ", 1);
+		write(1, &c, 1); //write s
+	}
+	else
+	{
+		write(1, &c, 1); //write s
+		while (i < flags->min - 1 && ++i) //pad
+			write(1, " ", 1);
+	}
 }
 
 char *parse_s(char *s, t_flags *flags)
