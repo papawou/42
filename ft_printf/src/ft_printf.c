@@ -5,8 +5,8 @@
 #include <unistd.h>
 
 #include "headers/ft_printf.h"
-#include "headers/parser_format.h"
-#include "headers/parser_type.h"
+#include "headers/parser_flags.h"
+#include "headers/format_types.h"
 
 int ft_printf(const char *s, ...)
 {
@@ -16,13 +16,13 @@ int ft_printf(const char *s, ...)
 	va_start(ap, s);
 	while (*s)
 	{
-		if (*s != '%')
+		if (*s != '%') //parse_word
 			write(1, *s, 1);
 		else
 		{ //format
 			t_flags *flags;
 			s = parse_flags(s, &flags); //parse flags
-			s = parse_pad(s, flags); //parse pad values
+			s = parse_pad(s, flags);
 			s = parse_type(s, ap, flags);
 		}
 	}

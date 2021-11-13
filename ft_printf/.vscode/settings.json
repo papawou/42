@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"stdbool.h": "c",
+		"format_flags.h": "c",
+		"parser_flags.h": "c",
+		"t_flags.h": "c",
+		"stdint.h": "c",
+		"limits": "c"
+	}
+}
