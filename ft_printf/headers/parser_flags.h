@@ -5,5 +5,6 @@
 #include "t_flags.h"
 
 char *parse_flags(const char *s, t_flags **flags);
+char *parse_pad(const char *s, t_flags *flags);
 
 #endif

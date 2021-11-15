@@ -7,17 +7,19 @@
 #include "headers/ft_printf.h"
 #include "headers/parser_flags.h"
 #include "headers/format_types.h"
+#include "headers/format_types.h"
 
 int ft_printf(const char *s, ...)
 {
 	va_list ap;
-	char		type;
 
 	va_start(ap, s);
 	while (*s)
 	{
 		if (*s != '%') //parse_word
-			write(1, *s, 1);
+		{
+			//todo write(1, *s, 1);
+		}	
 		else
 		{ //format
 			t_flags *flags;
@@ -27,4 +29,5 @@ int ft_printf(const char *s, ...)
 		}
 	}
 	va_end(ap);
+	return 42;
 }

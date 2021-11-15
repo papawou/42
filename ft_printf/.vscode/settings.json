@@ -5,6 +5,7 @@
 		"parser_flags.h": "c",
 		"t_flags.h": "c",
 		"stdint.h": "c",
-		"limits": "c"
+		"limits": "c",
+		"ft_utils.h": "c"
 	}
 }

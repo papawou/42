@@ -3,18 +3,27 @@
 #include <stdint.h>
 
 #include "headers/t_flags.h"
-
+#include "headers/format_flags.h"
+#include "headers/ft_utils.h"
 /*
 csdiuxX
 '#0-+ (int).(int)'
 */
 
-char *parse_c(unsigned char c, t_flags *flags)
+char *format_c(unsigned char c, t_flags *flags)
 {
-	int i = 0;
+	char *out;
+
+	if (flags->precision >= 0)
+		return NULL;
+	out = malloc(2);
+	out[0] = c;
+	out[1] = 0;
+
+	return out;
 }
 
-char *parse_s(char *s, t_flags *flags)
+char *format_s(char *s, t_flags *flags)
 {
 	char		*out;
 	char		*s_precision;
@@ -27,7 +36,7 @@ char *parse_s(char *s, t_flags *flags)
 	return (out);
 }
 
-char *parse_di(int n, t_flags *flags)
+char *format_di(int n, t_flags *flags)
 {
 	char		*out;
 	char		*s;
@@ -43,7 +52,7 @@ char *parse_di(int n, t_flags *flags)
 	return (out);
 }
 
-char *parse_u(unsigned int n, t_flags *flags)
+char *format_u(unsigned int n, t_flags *flags)
 {
 	char		*out;
 	char		*s;
@@ -59,7 +68,7 @@ char *parse_u(unsigned int n, t_flags *flags)
 	return (out);
 }
 
-char *parse_p(uintptr_t p, t_flags *flags)
+char *format_p(uintptr_t p, t_flags *flags)
 {
 	char		*out;
 	char		*s;
@@ -75,7 +84,7 @@ char *parse_p(uintptr_t p, t_flags *flags)
 	return (out);
 }
 
-char *parse_x(int n, t_flags *flags)
+char *format_x(int n, t_flags *flags)
 {
 	char		*out;
 	char		*s;
@@ -91,7 +100,7 @@ char *parse_x(int n, t_flags *flags)
 	return (out);
 }
 
-char *parse_X(int n, t_flags *flags)
+char *format_X(int n, t_flags *flags)
 {
 	char		*out;
 	char		*s;
@@ -111,23 +120,23 @@ char *parse_X(int n, t_flags *flags)
 char *parse_type(const char *s, va_list ap, t_flags *flags)
 {
 	if (*s == 'c')
-		return parse_c(va_arg(ap, unsigned char), flags);
+		return format_c((unsigned char) va_arg(ap, int), flags);
 	else if (*s == 's')
-		return parse_s(va_arg(ap, char *), flags);
+		return format_s(va_arg(ap, char *), flags);
 	else if (*s == 'p')
-		return parse_p(va_arg(ap, uintptr_t), flags);
+		return format_p(va_arg(ap, uintptr_t), flags);
 	else if (*s == 'd' || *s == 'i')
-		return parse_di(va_arg(ap, int), flags);
+		return format_di(va_arg(ap, int), flags);
 	else if (*s == 'u')
-		return parse_u(va_arg(ap, unsigned int), flags);
+		return format_u(va_arg(ap, unsigned int), flags);
 	else if (*s == 'x')
-		return parse_x(va_arg(ap, int), flags);
+		return format_x(va_arg(ap, int), flags);
 	else if (*s == 'X')
-		return parse_X(va_arg(ap, int), flags);
+		return format_X(va_arg(ap, int), flags);
 	else if(*s == '%')
 	{
 		write(1, "%", 1);
-		return (s + 1);
+		return ((char *) s + 1);
 	}
 	return (NULL);
 }

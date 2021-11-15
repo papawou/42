@@ -1,7 +1,8 @@
 //#include <sys/types.h>
 #include <stdlib.h>
 
-#include "t_flags.h"
+#include "headers/ft_utils.h"
+#include "headers/t_flags.h"
 
 t_flags *create_flags()
 {
@@ -19,11 +20,11 @@ t_flags *create_flags()
 	return (flags);
 }
 
-char *parse_pad(char *s, t_flags *flags)
+const char *parse_pad(const char *s, t_flags *flags)
 {
 	if(*s == '*' && ++s) //min width
 	{}
-	else if (ft_isdigit(s)) 
+	else if (ft_isdigit(*s)) 
 		s = q_atoi_s(s, &flags->width);
 	if (*s == '.' && ++s) //period
 	{
@@ -35,7 +36,7 @@ char *parse_pad(char *s, t_flags *flags)
 	return (s);
 }
 
-char *parse_flags(const char *s, t_flags **flags)
+const char *parse_flags(const char *s, t_flags **flags)
 {
 	*flags = create_flags();
 	if (*flags == NULL)

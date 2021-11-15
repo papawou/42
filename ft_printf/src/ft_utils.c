@@ -11,14 +11,16 @@ bool ft_strchr_bool(const char *src, const char c)
 	return (false);
 }
 
-size_t	ft_strncpy_len(const char *src, const size_t src_len, char **dst, size_t n)
+size_t	ft_strncpy_len(const char *src, size_t src_len, char **dst, size_t n)
 {
 	if (src_len < n)
 		n = src_len;
+	else
+		src_len = n;
 	*dst = malloc(n + 1);
 	(*dst)[n] = 0;
-	while (n--)
-		(*dst)[n] = src[n];
+	while (src_len && src_len--)
+		(*dst)[src_len] = src[src_len];
 	return (n);
 }
 
@@ -37,7 +39,7 @@ bool ft_isdigit(const char c)
 	return ('0' <= c && c <= '9');
 }
 
-char *q_atoi_s(const char *s, unsigned int *nb) //tothink negative value ?
+char *q_atoi_s(const char *s, int *nb) //tothink negative value ?
 {
 	*nb = 0;
 	while (ft_isdigit(*s))
@@ -46,7 +48,7 @@ char *q_atoi_s(const char *s, unsigned int *nb) //tothink negative value ?
 		*nb += *s - '0';
 		++s;
 	}
-	return (s);
+	return ((char *) s);
 }
 
 unsigned int count_digits(uintptr_t nb, const int len_base)
@@ -54,16 +56,16 @@ unsigned int count_digits(uintptr_t nb, const int len_base)
 	size_t	i;
 
 	i = 0;
-	while (nb > len_base && ++i)
+	while (nb > (uintptr_t) len_base && ++i)
 		nb /= len_base;
 	return (i);
 }
 
-void ft_fill_itoa(uintptr_t nb, char *dst, size_t digit_count, char *base, size_t base_len)
+void ft_fill_itoa(uintptr_t nb, char *dst, size_t digit_count, const char *base, const size_t base_len)
 {
 	while (digit_count && digit_count--)
 	{
-		dst[digit_count] = nb%base_len;
+		dst[digit_count] = base[nb%base_len];
 		nb = nb/base_len;
 	}
 }
@@ -94,11 +96,12 @@ size_t	q_itoa(const int nb, const char *base, char **dst)
 	return (out_len);
 }
 
-size_t	q_utoa(const uintptr_t nb, const char *base, const size_t base_len, char **dst)
+size_t	q_utoa(const uintptr_t nb, const char *base, char **dst)
 {
 	size_t base_len;
 	size_t dst_len;
 
+	base_len = ft_strlen(base);
 	dst_len = count_digits(nb, base_len);
 	*dst = malloc(dst_len + 1);
 	(*dst)[dst_len] = 0;

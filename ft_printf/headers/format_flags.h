@@ -4,7 +4,7 @@
 #include "t_flags.h"
 #include <sys/types.h>
 
-char *format_width(char *s, t_flags *flags, bool print_zero);
-char *format_precision_d(char *s, size_t max);
-char *format_precision_s(char *s, size_t precision);
+char *format_width(const char *s, const size_t s_len, const t_flags *flags, const bool print_zero);
+size_t	format_precision_d(char *s, size_t s_len, char **dst, int precision);
+size_t format_precision_s(char *s, char **dst, int precision);
 #endif

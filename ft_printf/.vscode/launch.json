@@ -1,0 +1,19 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name" : "debug with makefile",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/exe.out",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"preLaunchTask": "make_debug",
+			"miDebuggerPath": "/usr/bin/gdb"
+		}
+	]
+}
