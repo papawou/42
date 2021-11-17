@@ -5,5 +5,4 @@
 #include "stdarg.h"
 
 char *parse_type(const char *s, va_list ap, t_flags *flags);
-char *format_s(char *s, t_flags *flags);
 #endif

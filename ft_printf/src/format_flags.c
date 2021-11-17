@@ -25,30 +25,28 @@ char *insert_pad(const char *s, size_t s_start, size_t s_len, size_t pad, char c
 	return (out);
 }
 
-char *format_width(const char *s, const size_t s_len, const t_flags *flags, const bool print_zero)
+char *format_width(const char *s, const size_t s_len, const size_t prefix_len, const t_flags *flags)
 {
 	char		c;
 	size_t	pad;
 	
-	if (print_zero)
+	if (flags->zero)
 		c = '0';
 	else
 		c = ' ';
-	if (0 <= flags->width && s_len < (size_t) flags->width) //need pad
-		pad = flags->width - s_len;
+	if (0 <= flags->width && (s_len + prefix_len) < (size_t) flags->width) //need pad
+		pad = flags->width - (s_len + prefix_len);
 	else
 		pad = 0;
-	return insert_pad(s, flags->minus * s_len, s_len, pad, c);
+	return insert_pad(s, prefix_len + flags->minus * s_len, s_len, pad, c);
 }
 
 size_t	format_precision_d(char *s, size_t s_len, char **dst, int precision)
 {
 	size_t	digit_s;
 
-	if (precision == 0)
-	{}
-		//skip 0value
-
+	if (precision == 0 && *s == '0')
+		return 0; //nothing to output
 	digit_s = s_len - (s[0] == '-');
 	if (0 <= precision && digit_s < (size_t) precision) //need_pad
 	{

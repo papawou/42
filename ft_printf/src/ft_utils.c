@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <stdint.h>
+#include <unistd.h>
+
+void ft_putstr(char *s)
+{
+	size_t i;
+	i = 0;
+	while(s[i])
+		write(1, s + i++, 1);
+}
 
 bool ft_strchr_bool(const char *src, const char c)
 {
@@ -55,7 +64,7 @@ unsigned int count_digits(uintptr_t nb, const int len_base)
 {
 	size_t	i;
 
-	i = 0;
+	i = 1;
 	while (nb > (uintptr_t) len_base && ++i)
 		nb /= len_base;
 	return (i);
@@ -83,6 +92,8 @@ size_t	q_itoa(const int nb, const char *base, char **dst)
 		_nb = -nb;
 		out_len = 1;
 	}
+	else
+		_nb = nb;
 	out_len += count_digits(_nb, base_len);
 	*dst = malloc(out_len + 1);
 	(*dst)[out_len] = 0;

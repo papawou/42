@@ -24,14 +24,24 @@ const char *parse_pad(const char *s, t_flags *flags)
 {
 	if(*s == '*' && ++s) //min width
 	{}
-	else if (ft_isdigit(*s)) 
+	else if (ft_isdigit(*s))
+	{
 		s = q_atoi_s(s, &flags->width);
+		if (flags->width < 0)
+			flags->width = 0;
+	}
 	if (*s == '.' && ++s) //period
 	{
+		flags->precision = 0;
 		if (*s == '*' && ++s) //max width
 		{}
 		else if (ft_isdigit(*s))
+		{
 			s = q_atoi_s(s, &flags->precision);
+			if (flags->precision < 0)
+				flags->precision = 0;
+		}
+		flags->zero = 0;
 	}
 	return (s);
 }
@@ -59,5 +69,6 @@ const char *parse_flags(const char *s, t_flags **flags)
 			break;
 		++s;
 	}
+	(*flags)->zero = (*flags)->zero && !(*flags)->minus;
 	return (s);
 }

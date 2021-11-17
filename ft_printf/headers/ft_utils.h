@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+void ft_putstr(char *s);
 bool ft_isdigit(char c);
 size_t ft_strlen(const char *s);
 size_t	ft_strncpy_len(const char *src, const size_t src_len, char **dst, size_t n);

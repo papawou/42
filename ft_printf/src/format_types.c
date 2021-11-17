@@ -29,8 +29,10 @@ char *format_s(char *s, t_flags *flags)
 	char		*s_precision;
 	size_t	curr_len;
 
+	if (flags->hash || flags->blank || flags->plus || flags->zero)
+		return (NULL); // flags incorrect for type
 	curr_len = format_precision_s(s, &s_precision, flags->precision);
-	out = format_width(s_precision, curr_len, flags, false);
+	out = format_width(s_precision, curr_len, 0, flags, false);
 	if (s_precision != s)
 		free(s_precision);
 	return (out);
@@ -38,12 +40,14 @@ char *format_s(char *s, t_flags *flags)
 
 char *format_di(int n, t_flags *flags)
 {
+	bool		n_negative;
+
 	char		*out;
 	char		*s;
 	char		*s_precision;
 	size_t	curr_len;
 
-	curr_len = q_itoa(n, "0123456789", &s);
+	curr_len = q_itoa(n, _base_10, &s);
 	curr_len = format_precision_d(s, curr_len, &s_precision, flags->precision);
 	out = format_width(s_precision, curr_len, flags, flags->zero && flags->precision == -1 && !flags->minus);
 	if (s_precision != s)
@@ -139,4 +143,17 @@ char *parse_type(const char *s, va_list ap, t_flags *flags)
 		return ((char *) s + 1);
 	}
 	return (NULL);
+}
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+
+int main(void)
+{
+	//t_flags flags = {.blank = 0, .hash = 0, .plus = 0, .zero = 0, .minus = 1, .width = 7, .precision = -1};
+	//printf("%s", format_di(-123, &flags));
+	printf("%0s", "");
+
+	return 0;
 }
