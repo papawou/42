@@ -29,16 +29,26 @@ char *format_width(const char *s, const size_t s_len, const size_t prefix_len, c
 {
 	char		c;
 	size_t	pad;
+	size_t	out_len;
+	char		*out;
+	size_t	i;
 	
-	if (flags->zero)
-		c = '0';
-	else
-		c = ' ';
+	c = flags->zero * '0' + !flags->zero * ' ';
+	pad = 0;
 	if (0 <= flags->width && (s_len + prefix_len) < (size_t) flags->width) //need pad
 		pad = flags->width - (s_len + prefix_len);
-	else
-		pad = 0;
-	return insert_pad(s, prefix_len + flags->minus * s_len, s_len, pad, c);
+	i = 0;
+	out_len = s_len + prefix_len + pad;
+	out = malloc(out_len + 1);
+	out[0] = 'a';
+	out[out_len] = 0;
+	while (i < flags->minus * s_len && ++i) //start string
+		out[i - 1] = s[i - 1];
+	while (i < flags->minus * s_len + pad + prefix_len && ++i) //pad
+		out[i - 1] = c;
+	while (i < out_len && ++i) //end string
+		out[i - 1] = s[i - pad - prefix_len - 1];
+	return (out);
 }
 
 size_t	format_precision_d(char *s, size_t s_len, char **dst, int precision)

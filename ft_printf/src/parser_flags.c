@@ -15,7 +15,7 @@ t_flags *create_flags()
 	flags->hash = 0;
 	flags->blank = 0;
 	
-	flags->width = -1;
+	flags->width = 0;
 	flags->precision = -1;
 	return (flags);
 }
@@ -25,24 +25,24 @@ const char *parse_pad(const char *s, t_flags *flags)
 	if(*s == '*' && ++s) //min width
 	{}
 	else if (ft_isdigit(*s))
-	{
 		s = q_atoi_s(s, &flags->width);
-		if (flags->width < 0)
-			flags->width = 0;
+	if (flags->width < 0)
+	{
+		flags->minus = 1;
+		flags->width = -flags->width;
 	}
-	if (*s == '.' && ++s) //period
+	if (*s == '.' && ++s) //precision
 	{
 		flags->precision = 0;
-		if (*s == '*' && ++s) //max width
+		if (*s == '*' && ++s)
 		{}
 		else if (ft_isdigit(*s))
-		{
 			s = q_atoi_s(s, &flags->precision);
-			if (flags->precision < 0)
-				flags->precision = 0;
-		}
-		flags->zero = 0;
+		if (flags->precision < 0)
+			flags->precision = 0;
 	}
+	flags->zero = (flags->zero && !flags->minus && flags->precision == -1);
+	flags->blank = flags->blank && !flags->plus;
 	return (s);
 }
 
@@ -69,6 +69,5 @@ const char *parse_flags(const char *s, t_flags **flags)
 			break;
 		++s;
 	}
-	(*flags)->zero = (*flags)->zero && !(*flags)->minus;
 	return (s);
 }
