@@ -169,28 +169,33 @@ char *format_X(int n, t_flags *flags)
 }
 
 #include <stdarg.h>
-char *parse_type(const char *s, va_list ap, t_flags *flags)
+ssize_t parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_len)
 {
+	t_va va;
 	if (*s == 'c')
-		return format_c((unsigned char) va_arg(ap, int), flags);
+		va = format_c((unsigned char) va_arg(ap, int), flags);
 	else if (*s == 's')
-		return format_s(va_arg(ap, char *), flags);
+		va = format_s(va_arg(ap, char *), flags);
 	else if (*s == 'p')
-		return format_p(va_arg(ap, uintptr_t), flags);
+		va = format_p(va_arg(ap, uintptr_t), flags);
 	else if (*s == 'd' || *s == 'i')
-		return format_di(va_arg(ap, int), flags);
+		va = format_di(va_arg(ap, int), flags);
 	else if (*s == 'u')
-		return format_u(va_arg(ap, unsigned int), flags);
+		va = format_u(va_arg(ap, unsigned int), flags);
 	else if (*s == 'x')
-		return format_x(va_arg(ap, int), flags);
+		va = format_x(va_arg(ap, int), flags);
 	else if (*s == 'X')
-		return format_X(va_arg(ap, int), flags);
+		va = format_X(va_arg(ap, int), flags);
 	else if(*s == '%')
 	{
-		write(1, "%", 1);
-		return ((char *) s + 1);
+		out_len += write(1, "%", 1);
+		return (s + 1);
 	}
-	return (NULL);
+	if (va.s == NULL)
+		return (NULL);
+	*out_len += write(1, va.s, va.len);
+	free(va.s);
+	return (s + 1); //format error
 }
 
 #include <unistd.h>

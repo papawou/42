@@ -11,19 +11,22 @@
 
 int ft_printf(const char *s, ...)
 {
+	size_t	out_len;
 	va_list ap;
 
 	va_start(ap, s);
+	out_len = 0;
 	while (*s)
 	{
 		if (*s != '%') //parse_word
 		{
-			//todo write(1, *s, 1);
-		}	
+			write(1, s++, 1);
+			++out_len;
+		}
 		else
-		{ //format
+		{
 			t_flags *flags;
-			s = parse_flags(s, &flags); //parse flags
+			s = parse_flags(s, &flags);
 			s = parse_pad(s, flags);
 			s = parse_type(s, ap, flags);
 		}
