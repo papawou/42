@@ -1,80 +1,85 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-#include "headers/ft_utils.h"
-#include "headers/t_flags.h"
+#include "ft_utils.h"
+#include "t_flags.h"
 
-char *insert_pad(const char *s, size_t s_start, size_t s_len, size_t pad, char c)
+size_t	print_c(const char c, size_t count)
 {
-	size_t	out_len;
-	char		*out;
 	size_t	i;
 
 	i = 0;
-	out_len = s_len + pad;
-	out = malloc(out_len + 1);
-	out[out_len] = 0;
-
-	while (i < s_start && ++i) //start string
-		out[i - 1] = s[i - 1];
-	while (i < s_start + pad) //pad
-		out[i++] = c;
-	while (i < out_len && ++i) //end string
-		out[i - 1] = s[i - pad - 1];
-	return (out);
-}
-
-char *format_width(const char *s, const size_t s_len, const size_t prefix_len, const t_flags *flags)
-{
-	char		c;
-	size_t	pad;
-	size_t	out_len;
-	char		*out;
-	size_t	i;
-	
-	c = flags->zero * '0' + !flags->zero * ' ';
-	pad = 0;
-	if (0 <= flags->width && (s_len + prefix_len) < (size_t) flags->width) //need pad
-		pad = flags->width - (s_len + prefix_len);
-	i = 0;
-	out_len = s_len + prefix_len + pad;
-	out = malloc(out_len + 1);
-	out[0] = 'a';
-	out[out_len] = 0;
-	while (i < flags->minus * s_len && ++i) //start string
-		out[i - 1] = s[i - 1];
-	while (i < flags->minus * s_len + pad + prefix_len && ++i) //pad
-		out[i - 1] = c;
-	while (i < out_len && ++i) //end string
-		out[i - 1] = s[i - pad - prefix_len - 1];
-	return (out);
-}
-
-size_t	format_precision_d(char *s, size_t s_len, char **dst, int precision)
-{
-	size_t	digit_s;
-
-	if (precision == 0 && *s == '0')
-		return 0; //nothing to output
-	digit_s = s_len - (s[0] == '-');
-	if (0 <= precision && digit_s < (size_t) precision) //need_pad
+	while (i < count)
 	{
-		*dst = insert_pad(s, s_len - digit_s, s_len, precision - digit_s, '0');
-		return (s_len + precision - digit_s);
+		write(1, &c, 1);
+		++i;
 	}
-	*dst = s;
-	return (s_len);
+	return (i);
 }
 
-size_t format_precision_s(char *s, char **dst, int precision)
+size_t	print_decimal_minus(t_va va_s, t_va va_prefix, t_flags *flags)
 {
-	size_t len;
+	size_t	out_len;
+	size_t precision;
 
-	len = ft_strlen(s);
-	if (0 <= precision && (size_t) precision < len) //need crop
-		len = ft_strncpy_len(s, len, dst, precision);
-	else
-		*dst = s;
-	return (len);
+	out_len = 0;
+	precision = 0;
+	if (0 < flags->precision)
+		precision = (va_s.len < (size_t) flags->precision) * (flags->precision - va_s.len);
+	out_len += write(1, va_prefix.s, va_prefix.len); //prefix
+	out_len += print_c('0', precision); //precision
+	out_len += write(1, va_s.s, va_s.len); // s
+	out_len += print_c(' ', (out_len < (size_t) flags->width) * (flags->width - out_len)); //pad ' '
+	return (out_len);
+}
+
+size_t	print_decimal_zero(t_va va_s, t_va va_prefix, t_flags *flags)
+{
+	size_t	out_len;
+	size_t	pad;
+
+	pad = 0;
+	if ((va_s.len + va_prefix.len) < (size_t) flags->width)
+		pad = (flags->width - va_s.len - va_prefix.len);
+	out_len = 0;
+	out_len += write(1, va_prefix.s, va_prefix.len); //prefix
+	out_len += print_c('0', pad); //pad 0
+	out_len += write(1, va_s.s, va_s.len); //s
+	return (out_len);
+}
+
+size_t	print_decimal_right(t_va va_s, t_va va_prefix, t_flags *flags)
+{
+	size_t	out_len;
+	size_t	width;
+	size_t	precision;
+
+	precision = 0;
+	if (0 < flags->precision)
+		precision = (va_s.len < (size_t) flags->precision) * (flags->precision - va_s.len);
+	width = va_s.len + va_prefix.len + precision;
+	out_len = 0;
+	out_len += print_c(' ', (width < (size_t) flags->width) * (flags->width - width)); //pad ' '
+	out_len += write(1, va_prefix.s, va_prefix.len); //prefix
+	out_len += print_c('0', precision); //precision
+	out_len += write(1, va_s.s, va_s.len); //s
+	return (out_len);
+}
+
+size_t print_decimal(t_va va_s, t_va va_prefix, t_flags *flags)
+{
+	size_t	out_len;
+
+	if (flags->minus) //left
+		out_len = print_decimal_minus(va_s, va_prefix, flags);
+	if (flags->zero) //no precision
+		out_len = print_decimal_zero(va_s, va_prefix, flags);
+	else //right
+		out_len = print_decimal_right(va_s, va_prefix, flags);
+	if (va_prefix.s)
+		free(va_prefix.s);
+	free(va_s.s);
+	return (out_len);
 }

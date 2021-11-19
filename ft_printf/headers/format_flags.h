@@ -1,10 +1,9 @@
 #ifndef FORMAT_FLAGS_H
 # define FORMAT_FLAGS_H
 
-#include "t_flags.h"
 #include <sys/types.h>
+#include "t_flags.h"
 
-char *format_width(const char *s, const size_t s_len, const size_t prefix_len, const t_flags *flags);
-size_t	format_precision_d(char *s, size_t s_len, char **dst, int precision);
-size_t format_precision_s(char *s, char **dst, int precision);
+size_t	print_decimal(t_va va_s, t_va va_prefix, t_flags *flags);
+size_t	print_c(const char c, size_t count);
 #endif

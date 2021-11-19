@@ -4,33 +4,15 @@
 #include <stdint.h>
 #include <unistd.h>
 
-void ft_putstr(char *s)
-{
-	size_t i;
-	i = 0;
-	while(s[i])
-		write(1, s + i++, 1);
-}
+#include "t_flags.h"
+#include "t_va.h"
 
-bool ft_strchr_bool(const char *src, const char c)
+bool ft_strchr_bool(const char *src, const char c) //to fix infinite loop
 {
 	while(*src)
 		if (*src == c)
 			return (true);
 	return (false);
-}
-
-size_t	ft_strncpy_len(const char *src, size_t src_len, char **dst, size_t n)
-{
-	if (src_len < n)
-		n = src_len;
-	else
-		src_len = n;
-	*dst = malloc(n + 1);
-	(*dst)[n] = 0;
-	while (src_len && src_len--)
-		(*dst)[src_len] = src[src_len];
-	return (n);
 }
 
 size_t ft_strlen(const char *s)
@@ -48,7 +30,7 @@ bool ft_isdigit(const char c)
 	return ('0' <= c && c <= '9');
 }
 
-char *q_atoi_s(const char *s, int *nb) //tothink negative value ?
+char *atoi_s(const char *s, int *nb) //tothink negative value ?
 {
 	*nb = 0;
 	while (ft_isdigit(*s))
@@ -60,62 +42,32 @@ char *q_atoi_s(const char *s, int *nb) //tothink negative value ?
 	return ((char *) s);
 }
 
-unsigned int count_digits(uintptr_t nb, const int len_base)
+size_t	count_digits(uintptr_t nb, const size_t base_len)
 {
 	size_t	i;
 
 	i = 1;
-	while (nb > (uintptr_t) len_base && ++i)
-		nb /= len_base;
+	while (nb > (uintptr_t) base_len && ++i)
+		nb /= base_len;
 	return (i);
 }
 
-void ft_fill_itoa(uintptr_t nb, char *dst, size_t digit_count, const char *base, const size_t base_len)
+void fill_utoa(uintptr_t nb, t_va va_out, const t_va va_base)
 {
-	while (digit_count && digit_count--)
+	while (va_out.len && va_out.len--)
 	{
-		dst[digit_count] = base[nb%base_len];
-		nb = nb/base_len;
+		va_out.s[va_out.len] = va_base.s[nb%va_base.len];
+		nb /= va_base.len;
 	}
 }
 
-size_t	q_itoa(const int nb, const char *base, char **dst)
+t_va	utoa(const uintptr_t nb, const t_va va_base)
 {
-	unsigned int	_nb;
-	size_t				base_len;
-	size_t				out_len;
+	t_va	va_out;
 
-	out_len = 0;
- 	base_len = ft_strlen(base);
-	if (nb < 0)
-	{
-		_nb = -nb;
-		out_len = 1;
-	}
-	else
-		_nb = nb;
-	out_len += count_digits(_nb, base_len);
-	*dst = malloc(out_len + 1);
-	(*dst)[out_len] = 0;
-	if (nb < 0)
-	{
-		(*dst)[0] = '-';
-		ft_fill_itoa(_nb, *dst + 1, out_len - 1, base, base_len);
-	}
-	else
-		ft_fill_itoa(_nb, *dst, out_len, base, base_len);
-	return (out_len);
-}
-
-size_t	q_utoa(const uintptr_t nb, const char *base, char **dst)
-{
-	size_t base_len;
-	size_t dst_len;
-
-	base_len = ft_strlen(base);
-	dst_len = count_digits(nb, base_len);
-	*dst = malloc(dst_len + 1);
-	(*dst)[dst_len] = 0;
-	ft_fill_itoa(nb, *dst, dst_len, base, base_len);
-	return (dst_len);
+	va_out.len = count_digits(nb, va_base.len);
+	va_out.s = malloc(va_out.len + 1);
+	va_out.s[va_out.len] = 0;
+	fill_utoa(nb, va_out, va_base);
+	return (va_out);
 }

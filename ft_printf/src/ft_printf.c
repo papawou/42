@@ -1,20 +1,18 @@
-#include <stdarg.h>
 #include <sys/types.h>
-#include <stdbool.h>
-#include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
 
-#include "headers/ft_printf.h"
-#include "headers/parser_flags.h"
-#include "headers/format_types.h"
-#include "headers/format_types.h"
+#include "parser.h"
+#include "t_flags.h"
 
 int ft_printf(const char *s, ...)
 {
+	t_flags *flags;
 	size_t	out_len;
 	va_list ap;
 
 	va_start(ap, s);
+	flags = create_flags();
 	out_len = 0;
 	while (*s)
 	{
@@ -25,12 +23,12 @@ int ft_printf(const char *s, ...)
 		}
 		else
 		{
-			t_flags *flags;
-			s = parse_flags(s, &flags);
+			reset_flags(flags);
+			s = parse_flags(s, flags);
 			s = parse_pad(s, flags);
-			s = parse_type(s, ap, flags);
+			s = parse_type(s, ap, flags, &out_len);
 		}
 	}
 	va_end(ap);
-	return 42;
+	return (out_len);
 }

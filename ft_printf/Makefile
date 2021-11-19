@@ -8,11 +8,11 @@ else
 endif
 NAME := exe.out
 
-INC_DIR := ./
+INC_DIR := ./headers
 OBJ_DIR := ./obj
 SRC_DIR := ./src
 
-SRC := format_flags.c  format_types.c  ft_printf.c  ft_utils.c  parser_flags.c  test.c
+SRC := format_flags.c  format_types.c  ft_printf.c  ft_utils.c  parser.c  t_flags.c
 OBJ := ${SRC:.c=.o}
 OBJS := ${addprefix ${OBJ_DIR}/,${OBJ}}
 
