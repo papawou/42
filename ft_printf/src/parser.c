@@ -1,9 +1,11 @@
 #include <stdbool.h>
 #include <stdarg.h>
-
 #include <stddef.h>
+#include <unistd.h>
+
 #include "t_flags.h"
 #include "ft_utils.h"
+#include "format_types.h"
 
 const char *parse_pad(const char *s, t_flags *flags)
 {
@@ -54,7 +56,7 @@ const char *parse_flags(const char *s, t_flags *flags)
 	return (s);
 }
 
-char	*parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_len)
+const char	*parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_len)
 {
 	ssize_t	out;
 

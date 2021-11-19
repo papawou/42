@@ -6,9 +6,9 @@
 #include "t_flags.h"
 
 
-size_t	format_c(unsigned char c);
-size_t	format_s(char *s, t_flags *flags);
-size_t	format_di(int n, t_flags *flags);
-size_t	format_u(unsigned int n, t_flags *flags);
-size_t	format_hex(uintptr_t n, bool caps, bool prefix, t_flags *flags);
+int	format_c(unsigned char c);
+int	format_s(char *s, t_flags *flags);
+int	format_di(int n, t_flags *flags);
+int	format_u(unsigned int n, t_flags *flags);
+int	format_hex(uintptr_t n, bool caps, bool prefix, t_flags *flags);
 #endif

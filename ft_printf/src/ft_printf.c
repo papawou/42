@@ -8,7 +8,7 @@
 int ft_printf(const char *s, ...)
 {
 	t_flags *flags;
-	size_t	out_len;
+	int	out_len;
 	va_list ap;
 
 	va_start(ap, s);
@@ -27,6 +27,8 @@ int ft_printf(const char *s, ...)
 			s = parse_flags(s, flags);
 			s = parse_pad(s, flags);
 			s = parse_type(s, ap, flags, &out_len);
+			if (s == NULL)
+				return (-1);
 		}
 	}
 	va_end(ap);

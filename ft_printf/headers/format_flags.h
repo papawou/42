@@ -4,6 +4,6 @@
 #include <sys/types.h>
 #include "t_flags.h"
 
-size_t	print_decimal(t_va va_s, t_va va_prefix, t_flags *flags);
-size_t	print_c(const char c, size_t count);
+int	print_decimal(t_va va_s, t_va va_prefix, t_flags *flags);
+int	print_c(const char c, int count);
 #endif

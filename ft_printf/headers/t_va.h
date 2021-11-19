@@ -6,7 +6,7 @@
 typedef struct s_va
 {
 	char		*s;
-	size_t	len;
+	int	len;
 }	t_va;
 
 #endif

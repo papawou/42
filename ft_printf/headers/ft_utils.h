@@ -9,7 +9,7 @@
 
 bool		ft_strchr_bool(const char *src, const char c);
 bool		ft_isdigit(char c);
-size_t	ft_strlen(const char *s);
+int	ft_strlen(const char *s);
 char		*atoi_s(const char *s, int *nb);
 t_va		utoa(const uintptr_t nb, const t_va va_base);
 

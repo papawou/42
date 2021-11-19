@@ -15,9 +15,9 @@ bool ft_strchr_bool(const char *src, const char c) //to fix infinite loop
 	return (false);
 }
 
-size_t ft_strlen(const char *s)
+int ft_strlen(const char *s)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	while(*s && ++s)
@@ -42,9 +42,9 @@ char *atoi_s(const char *s, int *nb) //tothink negative value ?
 	return ((char *) s);
 }
 
-size_t	count_digits(uintptr_t nb, const size_t base_len)
+int	count_digits(uintptr_t nb, const int base_len)
 {
-	size_t	i;
+	int	i;
 
 	i = 1;
 	while (nb > (uintptr_t) base_len && ++i)
