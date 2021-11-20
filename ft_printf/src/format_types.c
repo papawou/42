@@ -25,15 +25,17 @@ int	format_s(char *s, t_flags *flags)
 
 	i = 0;
 	out_len = 0;
+	if (s == NULL)
+		s = "(null)";
 	if (flags->minus)
 	{
-		while (s != NULL && s[i] && (i < flags->precision || flags->precision == -1) && ++i) //spre
+		while (s[i] && (i < flags->precision || flags->precision == -1) && ++i) //spre
 			out_len += write(1, s + i - 1, 1);
 		out_len += print_c(' ', flags->width - i);
 	}
 	else
 	{
-		while (s != NULL && s[i] && (i < flags->precision || flags->precision == -1)) //count spre_len
+		while (s[i] && (i < flags->precision || flags->precision == -1)) //count spre_len
 			++i;
 		out_len += print_c(' ', flags->width - i);
 		out_len += write(1, s, i);	//spre

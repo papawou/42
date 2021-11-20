@@ -47,7 +47,7 @@ int	count_digits(unsigned long long nb, const int base_len)
 	int	i;
 
 	i = 1;
-	while (nb > (uintptr_t) base_len && ++i)
+	while (nb >= (unsigned long long) base_len && ++i)
 		nb /= base_len;
 	return (i);
 }
@@ -62,7 +62,7 @@ void fill_utoa(unsigned long long nb, t_va va_out, const t_va va_base)
 }
 
 t_va	utoa(const unsigned long long nb, const t_va va_base)
-{
+{ 
 	t_va	va_out;
 
 	va_out.len = count_digits(nb, va_base.len);

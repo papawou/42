@@ -11,9 +11,8 @@
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
-			"MIMode": "gdb",
-			"preLaunchTask": "make_debug",
-			"miDebuggerPath": "/usr/bin/gdb"
+			"MIMode": "lldb",
+			"preLaunchTask": "make_debug"
 		}
 	]
 }

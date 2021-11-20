@@ -38,6 +38,11 @@ int ft_printf(const char *s, ...)
 
 int main()
 {
-	printf("-\n%d", ft_printf(" %x %x %x %x %x %x %x", INT_MAX, INT_MIN, LONG_MAX, LONG_MIN, ULONG_MAX, 0, -42));
+	printf("EXAMPLE\n");
+	printf("-%d",
+		printf(" %p ", (void *) 16));
+	printf("\nTEST\n");
+	printf("-%d",
+		ft_printf(" %p ", (void *) 16));
 }
 */
