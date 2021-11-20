@@ -7,30 +7,32 @@
 
 int ft_printf(const char *s, ...)
 {
-	t_flags *flags;
+	t_flags flags;
 	int	out_len;
 	va_list ap;
 
 	va_start(ap, s);
-	flags = create_flags();
 	out_len = 0;
-	while (*s)
+	while (s != NULL && *s)
 	{
 		if (*s != '%') //parse_word
-		{
-			write(1, s++, 1);
-			++out_len;
-		}
+			out_len += write(1, s++, 1);
 		else
 		{
-			reset_flags(flags);
-			s = parse_flags(s, flags);
-			s = parse_pad(s, flags);
-			s = parse_type(s, ap, flags, &out_len);
-			if (s == NULL)
-				return (-1);
+			++s;
+			reset_flags(&flags);
+			s = parse_flags(s, &flags);
+			s = parse_pad(s, ap, &flags);
+			s = parse_type(s, ap, &flags, &out_len);
 		}
 	}
 	va_end(ap);
+	if (s == NULL)
+			return (-1);
 	return (out_len);
+}
+
+int main()
+{
+	ft_printf("%d", 123);
 }

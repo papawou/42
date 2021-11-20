@@ -54,6 +54,8 @@ int	format_di(int n, t_flags *flags)
 		va_s = utoa(n, _va_base_10);
 	if (va_s.s == NULL)
 		return (-1);
+	if (va_s.s[0] == '0' && flags->precision == 0)
+		va_s.len = 0;
 	va_prefix.len = ((flags->blank || flags->plus) && !is_negative) || is_negative;
 	va_prefix.s = NULL;
 	if (va_prefix.len)
@@ -110,6 +112,7 @@ int	format_hex(uintptr_t n, bool caps, bool prefix, t_flags *flags)
 	return (print_decimal(va_s, va_prefix, flags));
 }
 
+/*
 #include <stdarg.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -117,9 +120,10 @@ int	format_hex(uintptr_t n, bool caps, bool prefix, t_flags *flags)
 
 int main(void)
 {
-	t_flags flags = {.blank = 1, .hash = 0, .plus = 1, .zero = 1, .minus = 0, .width = 10, .precision = -1};
+	t_flags flags = {.blank = 1, .hash = 0, .plus = 1, .zero = 1, .minus = 0, .width = 10, .precision = 0};
 	flags.zero = (flags.zero && !flags.minus && flags.precision == -1);
 	flags.blank = flags.blank && !flags.plus;
-	printf("-\n%d", format_di(123, &flags));
+	printf("-\n%d", format_di(0, &flags));
 	return 0;
 }
+*/

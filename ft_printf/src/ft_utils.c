@@ -7,10 +7,10 @@
 #include "t_flags.h"
 #include "t_va.h"
 
-bool ft_strchr_bool(const char *src, const char c) //to fix infinite loop
+bool ft_strchr_bool(const char *src, const char c)
 {
 	while(*src)
-		if (*src == c)
+		if (*src++ == c)
 			return (true);
 	return (false);
 }
@@ -30,7 +30,7 @@ bool ft_isdigit(const char c)
 	return ('0' <= c && c <= '9');
 }
 
-char *atoi_s(const char *s, int *nb) //tothink negative value ?
+char *atoi_s(const char *s, int *nb)
 {
 	*nb = 0;
 	while (ft_isdigit(*s))

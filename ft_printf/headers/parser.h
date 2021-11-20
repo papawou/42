@@ -8,7 +8,7 @@
 #include "t_flags.h"
 
 char		*parse_flags(const char *s, t_flags *flags);
-char		*parse_pad(const char *s, t_flags *flags);
+char		*parse_pad(const char *s, va_list ap, t_flags *flags);
 char		*parse_type(const char *s, va_list ap, t_flags *flags, int *out_len);
 
 #endif

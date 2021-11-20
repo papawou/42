@@ -7,10 +7,12 @@
 #include "ft_utils.h"
 #include "format_types.h"
 
-const char *parse_pad(const char *s, t_flags *flags)
+const char *parse_pad(const char *s, va_list ap, t_flags *flags)
 {
+	if (s == NULL)
+		return (NULL);
 	if(*s == '*' && ++s) //min width
-	{}
+		flags->width = va_arg(ap, int);
 	else if (ft_isdigit(*s))
 		s = atoi_s(s, &flags->width);
 	if (flags->width < 0)
@@ -22,7 +24,7 @@ const char *parse_pad(const char *s, t_flags *flags)
 	{
 		flags->precision = 0;
 		if (*s == '*' && ++s)
-		{}
+			flags->precision = va_arg(ap, int);
 		else if (ft_isdigit(*s))
 			s = atoi_s(s, &flags->precision);
 		if (flags->precision < 0)
@@ -58,10 +60,12 @@ const char *parse_flags(const char *s, t_flags *flags)
 
 const char	*parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_len)
 {
-	ssize_t	out;
+	int	out;
 
 	out = -1;
-	if (*s == 'c')
+	if (s == NULL)
+		return (NULL);
+	else if (*s == 'c')
 		out = format_c((unsigned char) va_arg(ap, int));
 	else if (*s == 's')
 		out = format_s(va_arg(ap, char *), flags);
