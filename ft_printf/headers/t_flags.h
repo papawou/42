@@ -15,5 +15,4 @@ typedef struct s_flags
 } t_flags;
 
 void		reset_flags(t_flags *flags);
-t_flags	*create_flags();
 #endif

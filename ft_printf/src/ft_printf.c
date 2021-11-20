@@ -32,7 +32,12 @@ int ft_printf(const char *s, ...)
 	return (out_len);
 }
 
+/*
+#include <stdio.h>
+#include <limits.h>
+
 int main()
 {
-	ft_printf("%d", 123);
+	printf("-\n%d", ft_printf(" %x %x %x %x %x %x %x", INT_MAX, INT_MIN, LONG_MAX, LONG_MIN, ULONG_MAX, 0, -42));
 }
+*/

@@ -27,13 +27,13 @@ int	format_s(char *s, t_flags *flags)
 	out_len = 0;
 	if (flags->minus)
 	{
-		while (s[i] && (i < flags->precision || flags->precision == -1) && ++i) //spre
+		while (s != NULL && s[i] && (i < flags->precision || flags->precision == -1) && ++i) //spre
 			out_len += write(1, s + i - 1, 1);
 		out_len += print_c(' ', flags->width - i);
 	}
 	else
 	{
-		while (s[i] && (i < flags->precision || flags->precision == -1)) //count spre_len
+		while (s != NULL && s[i] && (i < flags->precision || flags->precision == -1)) //count spre_len
 			++i;
 		out_len += print_c(' ', flags->width - i);
 		out_len += write(1, s, i);	//spre
@@ -82,7 +82,7 @@ int	format_u(unsigned int n, t_flags *flags)
 	return (print_decimal(va_s, (t_va) {.s = NULL, .len = 0}, flags));
 }
 
-int	format_hex(uintptr_t n, bool caps, bool prefix, t_flags *flags)
+int	format_hex(unsigned long long n, bool caps, bool prefix, t_flags *flags)
 {
 	t_va	va_s;
 	t_va	va_prefix;

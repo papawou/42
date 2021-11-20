@@ -1,12 +1,13 @@
 GCC := gcc
-
-DEBUG ?= 1
+AR := ar
+AR_FLAGS := rcs
+DEBUG ?= 0
 ifeq ($(DEBUG), 1)
     GCC_FLAGS = -Wall -Werror -Wextra -g -fdiagnostics-color=always
 else
     GCC_FLAGS = -Wall -Werror -Wextra
 endif
-NAME := exe.out
+NAME := libftprintf.a
 
 INC_DIR := ./headers
 OBJ_DIR := ./obj
@@ -19,6 +20,12 @@ OBJS := ${addprefix ${OBJ_DIR}/,${OBJ}}
 all : $(NAME)
 
 $(NAME) : ${OBJS}
+	$(AR) $(AR_FLAGS) $@ $^
+
+bonus : ${OBJS}
+	$(AR) $(AR_FLAGS) $@ $^
+
+exe.out : ${OBJS}
 	$(GCC) $(GCC_FLAGS) $^ -o $@ -I${INC_DIR}
 
 ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c

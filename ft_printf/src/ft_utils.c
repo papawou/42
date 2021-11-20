@@ -42,7 +42,7 @@ char *atoi_s(const char *s, int *nb)
 	return ((char *) s);
 }
 
-int	count_digits(uintptr_t nb, const int base_len)
+int	count_digits(unsigned long long nb, const int base_len)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ int	count_digits(uintptr_t nb, const int base_len)
 	return (i);
 }
 
-void fill_utoa(uintptr_t nb, t_va va_out, const t_va va_base)
+void fill_utoa(unsigned long long nb, t_va va_out, const t_va va_base)
 {
 	while (va_out.len && va_out.len--)
 	{
@@ -61,12 +61,14 @@ void fill_utoa(uintptr_t nb, t_va va_out, const t_va va_base)
 	}
 }
 
-t_va	utoa(const uintptr_t nb, const t_va va_base)
+t_va	utoa(const unsigned long long nb, const t_va va_base)
 {
 	t_va	va_out;
 
 	va_out.len = count_digits(nb, va_base.len);
 	va_out.s = malloc(va_out.len + 1);
+	if (va_out.s == NULL)
+		return (t_va) {.s = NULL, .len = -1};
 	va_out.s[va_out.len] = 0;
 	fill_utoa(nb, va_out, va_base);
 	return (va_out);

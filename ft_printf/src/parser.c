@@ -74,11 +74,11 @@ const char	*parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_le
 	else if (*s == 'u')
 		out = format_u(va_arg(ap, unsigned int), flags);
 	else if (*s == 'p' || *s == 'x' || *s == 'X')
-		out = format_hex(va_arg(ap, uintptr_t), *s == 'X', (*s == 'p' || flags->hash), flags);
+		out = format_hex(va_arg(ap, unsigned long long), *s == 'X', (*s == 'p' || flags->hash), flags);
 	else if(*s == '%')
 		out = write(1, "%", 1);
 	if (out < 0)
 		return (NULL);
-	out_len += out;
+	*out_len += out;
 	return (s + 1);
 }
