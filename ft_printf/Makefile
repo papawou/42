@@ -25,9 +25,6 @@ $(NAME) : ${OBJS}
 bonus : ${OBJS}
 	$(AR) $(AR_FLAGS) ${NAME} $^
 
-exe.out : ${OBJS} ./obj/test.o
-	$(GCC) $(GCC_FLAGS) $^ -o $@ -I${INC_DIR}
-
 ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c
 	$(GCC) $(GCC_FLAGS) -c $< -o $@ -I${INC_DIR}
 
