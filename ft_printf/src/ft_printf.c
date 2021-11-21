@@ -31,18 +31,3 @@ int ft_printf(const char *s, ...)
 			return (-1);
 	return (out_len);
 }
-
-/*
-#include <stdio.h>
-#include <limits.h>
-
-int main()
-{
-	printf("EXAMPLE\n");
-	printf("-%d",
-		printf(" %p ", (void *) 16));
-	printf("\nTEST\n");
-	printf("-%d",
-		ft_printf(" %p ", (void *) 16));
-}
-*/

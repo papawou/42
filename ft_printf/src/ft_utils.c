@@ -61,7 +61,7 @@ void fill_utoa(unsigned long long nb, t_va va_out, const t_va va_base)
 	}
 }
 
-t_va	utoa(const unsigned long long nb, const t_va va_base)
+t_va	utoa(unsigned long long nb, const t_va va_base)
 { 
 	t_va	va_out;
 

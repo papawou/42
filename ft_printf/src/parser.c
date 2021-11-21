@@ -7,6 +7,18 @@
 #include "ft_utils.h"
 #include "format_types.h"
 
+void clean_type_flags(char c, t_flags *flags)
+{
+	if (c == 'p')
+	{
+		flags->zero = 0;
+		flags->precision = -1;
+		flags->hash = 1;
+	}
+	flags->zero = flags->zero && !flags->minus && flags->precision == -1;
+	flags->blank = flags->blank && !flags->plus;
+}
+
 const char *parse_pad(const char *s, va_list ap, t_flags *flags)
 {
 	if (s == NULL)
@@ -28,7 +40,7 @@ const char *parse_pad(const char *s, va_list ap, t_flags *flags)
 		else if (ft_isdigit(*s))
 			s = atoi_s(s, &flags->precision);
 		if (flags->precision < 0)
-			flags->precision = 0;
+			flags->precision = -1;
 	}
 	flags->zero = (flags->zero && !flags->minus && flags->precision == -1);
 	flags->blank = flags->blank && !flags->plus;
@@ -63,18 +75,21 @@ const char	*parse_type(const char *s, va_list ap, t_flags *flags, size_t *out_le
 	int	out;
 
 	out = -1;
+	clean_type_flags(*s, flags);
 	if (s == NULL)
 		return (NULL);
 	else if (*s == 'c')
-		out = format_c((unsigned char) va_arg(ap, int));
+		out = format_c((unsigned char) va_arg(ap, int), flags);
 	else if (*s == 's')
 		out = format_s(va_arg(ap, char *), flags);
 	else if (*s == 'd' || *s == 'i')
 		out = format_di(va_arg(ap, int), flags);
 	else if (*s == 'u')
 		out = format_u(va_arg(ap, unsigned int), flags);
-	else if (*s == 'p' || *s == 'x' || *s == 'X')
-		out = format_hex(va_arg(ap, unsigned long long), *s == 'X', (*s == 'p' || flags->hash), flags);
+	else if (*s == 'x' || *s == 'X')
+		out = format_hex(va_arg(ap, unsigned int), *s, *s == 'X', flags);
+	else if (*s == 'p')
+		out = format_hex(va_arg(ap, uintptr_t), *s, false, flags);
 	else if(*s == '%')
 		out = write(1, "%", 1);
 	if (out < 0)

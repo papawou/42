@@ -3,7 +3,7 @@ AR := ar
 AR_FLAGS := rcs
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
-    GCC_FLAGS = -Wall -Werror -Wextra -g -fdiagnostics-color=always
+    GCC_FLAGS = -g -fdiagnostics-color=always
 else
     GCC_FLAGS = -Wall -Werror -Wextra
 endif
@@ -23,9 +23,9 @@ $(NAME) : ${OBJS}
 	$(AR) $(AR_FLAGS) $@ $^
 
 bonus : ${OBJS}
-	$(AR) $(AR_FLAGS) $@ $^
+	$(AR) $(AR_FLAGS) ${NAME} $^
 
-exe.out : ${OBJS}
+exe.out : ${OBJS} ./obj/test.o
 	$(GCC) $(GCC_FLAGS) $^ -o $@ -I${INC_DIR}
 
 ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c
@@ -35,7 +35,7 @@ clean :
 	rm -f ${OBJS}
 
 fclean : clean
-	rm -f $(NAME)
+	rm -f $(NAME) exe.out bonus.a
 
 re : fclean all
 

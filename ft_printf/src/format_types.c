@@ -7,15 +7,31 @@
 #include "base_helpers.h"
 #include "format_flags.h"
 #include "ft_utils.h"
+#include "format_types.h"
 
 /*
 csdiuxX
 '#0-+ (int).(int)'
 */
 
-int	format_c(unsigned char c)
+int	format_c(unsigned char c, t_flags *flags)
 {
-	return write(1, &c, 1);
+	int	out_len;
+	int	i;
+
+	i = 1;
+	out_len = 0;
+	if (flags->minus)
+	{
+		out_len += write(1, &c, 1);
+		out_len += print_c(' ', flags->width - i);
+	}
+	else
+	{
+		out_len += print_c(' ', flags->width - i);
+		out_len += write(1, &c, i);	//spre
+	}
+	return (out_len);
 }
 
 int	format_s(char *s, t_flags *flags)
@@ -51,7 +67,7 @@ int	format_di(int n, t_flags *flags)
 
 	is_negative = n < 0;
 	if (is_negative)
-		va_s = utoa(-n, _va_base_10);
+		va_s = utoa(- (unsigned int) n, _va_base_10);
 	else
 		va_s = utoa(n, _va_base_10);
 	if (va_s.s == NULL)
@@ -84,48 +100,34 @@ int	format_u(unsigned int n, t_flags *flags)
 	return (print_decimal(va_s, (t_va) {.s = NULL, .len = 0}, flags));
 }
 
-int	format_hex(unsigned long long n, bool caps, bool prefix, t_flags *flags)
+int	format_hex(unsigned long long n, char type, bool caps, t_flags *flags)
 {
 	t_va	va_s;
 	t_va	va_prefix;
 	t_va	va_base;
 
+	if (type == 'p' && n == 0)
+		return format_s("(nil)", flags);
+	va_base = _va_base_hex;
 	if (caps)
 		va_base = _va_base_HEX;
-	else
-		va_base = _va_base_hex;
 	va_s = utoa(n, va_base);
 	if (va_s.s == NULL)
 		return (-1);
 	va_prefix.s = NULL;
-	va_prefix.len = prefix * 2;
+	va_prefix.len = flags->hash * (n != 0) * 2;
+	if (n == 0 && flags->precision == 0)
+		va_s.len = 0;
 	if (va_prefix.len)
 	{
-		va_prefix.s = malloc(va_prefix.len + 1);
+		va_prefix.s = malloc(2);
 		if (va_prefix.s == NULL)
 		{
 			free(va_s.s);
 			return (-1);
 		}
-		va_prefix.s[va_prefix.len] = 0;
 		va_prefix.s[0] = '0';
 		va_prefix.s[1] = caps * 'X' + !caps * 'x';
 	}
 	return (print_decimal(va_s, va_prefix, flags));
 }
-
-/*
-#include <stdarg.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-
-int main(void)
-{
-	t_flags flags = {.blank = 1, .hash = 0, .plus = 1, .zero = 1, .minus = 0, .width = 10, .precision = 0};
-	flags.zero = (flags.zero && !flags.minus && flags.precision == -1);
-	flags.blank = flags.blank && !flags.plus;
-	printf("-\n%d", format_di(0, &flags));
-	return 0;
-}
-*/
