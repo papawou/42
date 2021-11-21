@@ -17,7 +17,11 @@ SRC := format_flags.c  format_types.c  ft_printf.c  ft_utils.c  parser.c  t_flag
 OBJ := ${SRC:.c=.o}
 OBJS := ${addprefix ${OBJ_DIR}/,${OBJ}}
 
+
 all : $(NAME)
+
+test.out : ${NAME} ./obj/main.o
+	${GCC} ${GCC_FLAGS} ./obj/main.o -o $@ -L. -lftprintf -I${INC_DIR}
 
 $(NAME) : ${OBJS}
 	$(AR) $(AR_FLAGS) $@ $^
@@ -29,10 +33,10 @@ ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c
 	$(GCC) $(GCC_FLAGS) -c $< -o $@ -I${INC_DIR}
 
 clean :
-	rm -f ${OBJS}
+	rm -f ${OBJS} ./obj/main.o
 
 fclean : clean
-	rm -f $(NAME) exe.out bonus.a
+	rm -f $(NAME) test.out
 
 re : fclean all
 

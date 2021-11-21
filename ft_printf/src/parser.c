@@ -11,8 +11,8 @@ void clean_type_flags(char c, t_flags *flags)
 {
 	if (c == 'p')
 	{
-		flags->zero = 0;
-		flags->precision = -1;
+		//flags->zero = 0;
+		//flags->precision = -1;
 		flags->hash = 1;
 	}
 	flags->zero = flags->zero && !flags->minus && flags->precision == -1;
