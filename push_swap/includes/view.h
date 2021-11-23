@@ -3,6 +3,6 @@
 
 #include "stack.h"
 
-void print_stack(t_stack *stack);
+void print_stack(t_stack *sA, t_stack *sB);
 
 #endif

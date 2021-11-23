@@ -25,9 +25,8 @@ t_stack *parse_args(char *args[], size_t len)
 	size_t i;
 
 	i = 0;
-	s = (t_stack *) malloc(sizeof(t_stack));
+	s = create_stack();
 	while (i < len)
 		stack_push(s, create_elem(ft_atoi(args[i++]))); //a f d e f --> f e d f a
-	s->size = len;
 	return (s);
 }
