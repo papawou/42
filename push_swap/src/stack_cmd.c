@@ -4,7 +4,7 @@
 
 void cmd_swap(t_stack *stack)
 {
-	if (stack && stack->size > 1 && stack->head->prev)
+	if (stack && stack->size > 1)
 		swap(stack->head, stack->head->prev);
 }
 
@@ -19,11 +19,11 @@ void cmd_push(t_stack *src, t_stack *dst)
 	stack_push(dst, elem);
 }
 
-void cmd_rotate(t_stack *stack)
+void cmd_rotate(t_stack *stack) //if stack->size == 2 same as swap
 {
 	t_stack_elem *head;
 
-	if (!(stack && stack->size && stack->head != stack->tail))
+	if (!(stack && stack->size > 1))
 		return ;
 	head = stack->head;
 	stack_remove(head);
@@ -34,7 +34,7 @@ void cmd_rrotate(t_stack *stack)
 {
 	t_stack_elem *tail;
 
-	if (!(stack && stack->size && stack->head != stack->tail))
+	if (!(stack && stack->size > 1)) //if stack->size == 2 same as swap
 		return ;
 	tail = stack->tail;
 	stack_remove(tail);

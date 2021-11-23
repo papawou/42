@@ -27,6 +27,6 @@ t_stack *parse_args(char *args[], size_t len)
 	i = 0;
 	s = create_stack();
 	while (i < len)
-		stack_push(s, create_elem(ft_atoi(args[i++]))); //a f d e f --> f e d f a
+		stack_push(s, create_elem(ft_atoi(args[i++])));
 	return (s);
 }

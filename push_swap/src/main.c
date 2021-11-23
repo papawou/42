@@ -19,7 +19,7 @@ int	main(int argc, char *argv[])
 		print_stack(stack, stackB);
 		
 		//operation
-		cmd_rotate(stack);
+		cmd_rrotate(stack);
 		
 		
 		
