@@ -1,5 +1,5 @@
-#ifndef RESOLVER_H
-#define RESOLVER_H
+#ifndef GAME_H
+#define GAME_H
 
 #include "stack.h"
 #include "stack_cmd.h"

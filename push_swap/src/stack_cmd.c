@@ -1,6 +1,9 @@
+#include <stdbool.h>
+
 #include "stack.h"
 #include "stack_swap.h"
-
+#include "stack_cmd.h"
+#include "game.h"
 
 void cmd_swap(t_stack *stack)
 {
@@ -39,4 +42,29 @@ void cmd_rrotate(t_stack *stack)
 	tail = stack->tail;
 	stack_remove(tail);
 	stack_push(stack, tail);
+}
+
+
+bool apply_cmd(const t_game *g, enum e_cmd cmd)
+{
+	if (cmd == SA)
+		return cmd_swap(g->a);
+	if (cmd == SB)
+		return cmd_swap(g->b);
+	if (cmd == PA)
+		return cmd_push(g->b, g->a);
+	if (cmd == PB)
+		return cmd_push(g->a, g->b);
+	if (cmd == RA)
+		return cmd_rotate(g->a);
+	if (cmd == RRA)
+		return cmd_rrotate(g->a);
+	if (cmd == RB)
+		return	cmd_rotate(g->b);
+	if (cmd == RRB)
+		return cmd_rrotate(g->b);
+	if (cmd == RR)
+		return cmd_rotate(g->a) && cmd_rotate(g->b);
+	if (cmd == RRR)
+		return cmd_rrotate(g->a) && cmd_rrotate(g->b);
 }

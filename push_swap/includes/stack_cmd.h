@@ -3,9 +3,10 @@
 
 #include "stack.h"
 
-
 typedef enum e_cmd
 {
+	SA,
+	SB,
 	PA,
 	PB,
 	RA,
@@ -21,7 +22,6 @@ typedef struct s_cmd
 	enum e_cmd move;
 	struct s_cmd *prev;
 	unsigned int pos;
-	//state of piles
 } t_cmd;
 
 void cmd_swap(t_stack *stack);
