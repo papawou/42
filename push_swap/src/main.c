@@ -13,14 +13,14 @@ int	main()
 	game = create_game();
 	
 	game->a = create_stack();
-	
+	game->b = create_stack();
 	
 
 
 	stack_push(game->a, create_elem(5));
 	
 	stack_push(game->a, create_elem(15));
-	stack_push(game->a, create_elem(-20));
+	stack_push(game->b, create_elem(-20));
 	stack_push(game->a, create_elem(-10));
 	stack_push(game->a, create_elem(0));
 
