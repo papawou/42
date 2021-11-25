@@ -1,9 +1,11 @@
 #ifndef STACK_CMD_H
 #define STACK_CMD_H
 
+#include <stdbool.h>
 #include "stack.h"
+#include "game.h"
 
-typedef enum e_cmd
+enum e_cmd
 {
 	SA,
 	SB,
@@ -24,9 +26,8 @@ typedef struct s_cmd
 	unsigned int pos;
 } t_cmd;
 
-void cmd_swap(t_stack *stack);
-void cmd_push(t_stack *src, t_stack *dst);
-void cmd_rotate(t_stack *stack);
-void cmd_rrotate(t_stack *stack);
+bool apply_cmd(t_game *g, enum e_cmd cmd);
 
+t_cmd *create_cmd(enum e_cmd code, t_cmd *prev);
+enum e_cmd get_counter(const enum e_cmd move);
 #endif

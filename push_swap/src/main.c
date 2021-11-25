@@ -3,27 +3,22 @@
 #include "stack_swap.h"
 #include "stack.h"
 #include "stack_cmd.h"
+#include "game.h"
+#include "bcktrack.h"
 
 int	main(int argc, char *argv[])
 {
-	t_stack *stack;
-	t_stack *stackB;
-
-	stackB = create_stack();
-	stack_push(stackB, create_elem(-1));
-	stack_push(stackB, create_elem(-8));
-	stack_push(stackB, create_elem(-5));
-	if (argc > 1)
-	{
-		stack = parse_args(argv + 1, argc - 1);	
-		print_stack(stack, stackB);
-		
-		//operation
-		cmd_rrotate(stack);
-		
-		
-		
-		//result
-		print_stack(stack, stackB);
-	}
+	t_game *game;
+	
+	game = create_game();
+	
+	game->a = create_stack();
+	stack_push(game->a, create_elem(0));
+	stack_push(game->a, create_elem(1));
+	
+	game->b = create_stack();
+	stack_push(game->b, create_elem(-1));
+	stack_push(game->b, create_elem(-2));
+	
+	print_stack(game->a, game->b);
 }

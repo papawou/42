@@ -1,9 +1,21 @@
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "game.h"
-#include "stack_utils.h"
+#include "stack.h"
 
-bool g_is_sorted(t_game *g)
+t_game *create_game()
 {
-	return (stack_is_sorted(g->a) && stack_is_sorted(g->b));
+	t_game *out;
+
+	out = malloc(sizeof(t_game));
+	out->a = NULL;
+	out->b = NULL;
+	out->entry = NULL;
+	return (out);
+}
+
+bool game_is_sorted(t_game *g)
+{
+	return (stack_is_sorted(g->a) && g->b->size == 0);
 }
