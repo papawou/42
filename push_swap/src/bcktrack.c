@@ -40,7 +40,7 @@ bool bt_game(t_game *g)
 	t_cmd				*cand_cmd;
 	enum e_cmd	cmd;
 
-	cmd = PA;
+	cmd = SA;
 	while (cmd <= RRR)
 	{
 		if (g->entry  && g->entry->move == get_counter(cmd) && ++cmd) //opt_counter

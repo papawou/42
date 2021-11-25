@@ -36,7 +36,7 @@ int	main()
 	
 	stack_push(game->b, create_elem(90));
 	
-	stack_push(game->b, create_elem(85));
+	stack_push(game->a, create_elem(85));
 	
 	print_stack(game->a, game->b);
 	bt_game(game);
