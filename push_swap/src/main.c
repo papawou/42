@@ -6,7 +6,7 @@
 #include "game.h"
 #include "bcktrack.h"
 
-int	main(int argc, char *argv[])
+int	main()
 {
 	t_game *game;
 	
@@ -20,5 +20,7 @@ int	main(int argc, char *argv[])
 	stack_push(game->b, create_elem(-1));
 	stack_push(game->b, create_elem(-2));
 	
+	print_stack(game->a, game->b);
+	bt_game(game);
 	print_stack(game->a, game->b);
 }

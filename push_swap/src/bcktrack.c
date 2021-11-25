@@ -43,7 +43,7 @@ bool bt_game(t_game *g)
 	cmd = PA;
 	while (cmd <= RRR)
 	{
-		if (g->entry->move == get_counter(cmd) && ++cmd) //opt_counter
+		if (g->entry  && g->entry->move == get_counter(cmd) && ++cmd) //opt_counter
 			continue ;
 		//history comp
 		//	rotate * len == counter || rrotate

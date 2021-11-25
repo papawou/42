@@ -5,6 +5,8 @@
 #include "stack.h"
 #include "game.h"
 
+typedef struct s_game t_game;
+
 enum e_cmd
 {
 	SA,

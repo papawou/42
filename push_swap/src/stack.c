@@ -80,8 +80,8 @@ void stack_remove(t_stack_elem *A)
 bool stack_is_sorted(t_stack *stack)
 {
 	t_stack_elem *tmp;
-	t_stack_elem lowest;
-	
+
+	tmp = stack->head;
 	while (tmp)
 	{
 		if (!tmp->prev)

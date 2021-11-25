@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "stack.h"
 #include "stack_swap.h"
@@ -77,7 +78,7 @@ bool apply_cmd(t_game *g, enum e_cmd cmd)
 		return cmd_rrotate(g->b);
 	if (cmd == RR)
 		return cmd_rotate(g->a) || cmd_rotate(g->b);
-	if (cmd == RRR)
+	//if (cmd == RRR)
 		return cmd_rrotate(g->a) || cmd_rrotate(g->b);
 }
 
@@ -88,9 +89,8 @@ t_cmd *create_cmd(enum e_cmd code, t_cmd *prev)
 	out = malloc(sizeof(t_cmd));
 	out->move = code;
 	out->prev = prev;
-	out->prev = 0;  
 	if (prev)
-		out->prev = out->prev->pos + 1;
+		out->pos = out->prev->pos + 1;
 	return (out);
 }
 
@@ -99,24 +99,24 @@ enum e_cmd get_counter(const enum e_cmd move)
 	//prevent infinite loop
 	//opt_counter
 	//opt use bt generate different counter? 
-	if (SA)
+	if (move == SA)
 		return (SA);
-	if (SB)
+	if (move == SB)
 		return (SB);
-	if (PA)
+	if (move == PA)
 		return (PB);
-	if (PB)
+	if (move == PB)
 		return (PA);
-	if (RA)
+	if (move == RA)
 		return (RRA);
-	if (RRA)
+	if (move == RRA)
 		return (RA);
-	if (RB)
+	if (move == RB)
 		return (RRB);
-	if (RRB)
+	if (move == RRB)
 		return (RB);
-	if (RR)
+	if (move == RR)
 		return (RRR);
-	if (RRR)
-		return (RR);
+	//if (move == RRR)
+	return (RR);
 }

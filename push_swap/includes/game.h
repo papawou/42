@@ -6,6 +6,8 @@
 #include "stack.h"
 #include "stack_cmd.h"
 
+typedef struct s_cmd t_cmd;
+
 typedef struct s_game
 {
 	t_stack *a;
