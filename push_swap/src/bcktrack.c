@@ -3,7 +3,7 @@
 //return best track
 #include <stdbool.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 #include "stack.h"
 #include "game.h"
 #include "stack_cmd.h"
@@ -39,8 +39,11 @@ bool bt_game(t_game *g)
 {
 	t_cmd				*cand_cmd;
 	enum e_cmd	cmd;
+	static unsigned long long test = 0;
 
 	cmd = SA;
+	if (g->entry && g->entry->pos > 5)
+		return false;
 	while (cmd <= RRR)
 	{
 		if (g->entry  && g->entry->move == get_counter(cmd) && ++cmd) //opt_counter
@@ -69,5 +72,6 @@ bool bt_game(t_game *g)
 		apply_cmd(g, get_counter(cmd));
 		++cmd;
 	}
+	printf("%10lld\n", ++test);
 	return false;
 }

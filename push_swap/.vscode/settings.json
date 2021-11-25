@@ -2,6 +2,7 @@
 	"files.associations": {
 		"stack.h": "c",
 		"stack_cmd.h": "c",
-		"game.h": "c"
+		"game.h": "c",
+		"bcktrack.h": "c"
 	}
 }
