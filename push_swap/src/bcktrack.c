@@ -21,7 +21,7 @@ static bool history_unique(t_game *g)
 	cmd_last = g->entry;
 	while (cmd_last)
 	{
-		apply_cmd(g, get_counter(cmd_last->move)); //cancel cmd_last move
+		apply_move(g, get_counter(cmd_last->move)); //cancel cmd_last move
 		if (compare_hist_stack(g->a, a) && compare_hist_stack(g->b, b)) //duplicate result
 		{
 			hist_to_stack(g->a, a);
@@ -38,24 +38,24 @@ static bool history_unique(t_game *g)
 bool bt_game(t_game *g)
 {
 	t_cmd				*cand_cmd;
-	enum e_cmd	cmd;
+	enum e_move	move;
 	static unsigned long long test = 0;
 
-	cmd = SA;
+	move = SA;
 	if (g->entry && g->entry->pos > 5)
 		return false;
-	while (cmd <= RRR)
+	while (move <= RRR)
 	{
-		if (g->entry  && g->entry->move == get_counter(cmd) && ++cmd) //opt_counter
+		if (g->entry  && g->entry->move == get_counter(move) && ++move) //opt_counter
 			continue ;
 		//history comp
 		//	rotate * len == counter || rrotate
 		//	rotate * len - n == counter (rrotate can do same with less move)
-		if(!apply_cmd(g, cmd) && ++cmd) //opt_move_no_effect
+		if(!apply_move(g, move) && ++move) //opt_move_no_effect
 			continue ;
 
 		//register new cmd
-		cand_cmd = create_cmd(cmd, g->entry);
+		cand_cmd = create_cmd(move, g->entry);
 		g->entry = cand_cmd;
 
 		if (history_unique(g)) //noinfinit prevent same game before
@@ -69,9 +69,9 @@ bool bt_game(t_game *g)
 		//reverse state of game
 		g->entry = g->entry->prev;
 		free(cand_cmd);
-		apply_cmd(g, get_counter(cmd));
-		++cmd;
+		apply_move(g, get_counter(move));
+		++move;
 	}
-	printf("%10lld\n", ++test);
+	printf("%lld\n", ++test);
 	return false;
 }

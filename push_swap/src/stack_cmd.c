@@ -58,43 +58,53 @@ static bool cmd_rrotate(t_stack *stack)
 	return true ;
 }
 
-bool apply_cmd(t_game *g, enum e_cmd cmd)
+bool apply_move(t_game *g, enum e_move move)
 {
-	if (cmd == SA)
+	int test;
+
+	test = 0;
+	if (move == SA)
 		return cmd_swap(g->a);
-	if (cmd == SB)
+	if (move == SB)
 		return cmd_swap(g->b);
-	if (cmd == PA)
+	if (move == PA)
 		return cmd_push(g->b, g->a);
-	if (cmd == PB)
+	if (move == PB)
 		return cmd_push(g->a, g->b);
-	if (cmd == RA)
+	if (move == RA)
 		return cmd_rotate(g->a);
-	if (cmd == RRA)
+	if (move == RRA)
 		return cmd_rrotate(g->a);
-	if (cmd == RB)
+	if (move == RB)
 		return	cmd_rotate(g->b);
-	if (cmd == RRB)
+	if (move == RRB)
 		return cmd_rrotate(g->b);
-	if (cmd == RR)
-		return cmd_rotate(g->a) || cmd_rotate(g->b);
-	//if (cmd == RRR)
-		return cmd_rrotate(g->a) || cmd_rrotate(g->b);
+	if (move == RR)
+	{
+		test += cmd_rotate(g->a);
+		test += cmd_rotate(g->b);
+		return  test;
+	}
+
+	//if (move == RRR)
+	test += cmd_rrotate(g->a);
+	test += cmd_rrotate(g->b);
+	return test;
 }
 
-t_cmd *create_cmd(enum e_cmd code, t_cmd *prev)
+t_cmd *create_cmd(enum e_move move, t_cmd *prev)
 {
 	t_cmd *out;
 
 	out = malloc(sizeof(t_cmd));
-	out->move = code;
+	out->move = move;
 	out->prev = prev;
 	if (prev)
 		out->pos = out->prev->pos + 1;
 	return (out);
 }
 
-enum e_cmd get_counter(const enum e_cmd move)
+enum e_move get_counter(const enum e_move move)
 {
 	//prevent infinite loop
 	//opt_counter

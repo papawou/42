@@ -9,8 +9,8 @@ t_game *create_game()
 	t_game *out;
 
 	out = malloc(sizeof(t_game));
-	out->a = NULL;
-	out->b = NULL;
+	out->a = create_stack();
+	out->b = create_stack();
 	out->entry = NULL;
 	return (out);
 }

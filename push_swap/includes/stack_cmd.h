@@ -7,7 +7,7 @@
 
 typedef struct s_game t_game;
 
-enum e_cmd
+enum e_move
 {
 	SA,
 	SB,
@@ -23,13 +23,13 @@ enum e_cmd
 
 typedef struct s_cmd
 {
-	enum e_cmd move;
+	enum e_move move;
 	struct s_cmd *prev;
 	unsigned int pos;
 } t_cmd;
 
-bool apply_cmd(t_game *g, enum e_cmd cmd);
+bool apply_move(t_game *g, enum e_move move);
 
-t_cmd *create_cmd(enum e_cmd code, t_cmd *prev);
-enum e_cmd get_counter(const enum e_cmd move);
+t_cmd *create_cmd(enum e_move move, t_cmd *prev);
+enum e_move get_counter(const enum e_move move);
 #endif
