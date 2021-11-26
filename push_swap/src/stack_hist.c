@@ -4,7 +4,7 @@
 #include "stack.h"
 
 
-t_stack_hist	*copy_stack_to_hist(t_stack *stack)
+t_stack_hist	*stack_to_hist(t_stack *stack)
 {
 	t_stack_hist *hist;
 	t_stack_elem 	*tmp;

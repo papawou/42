@@ -8,24 +8,29 @@
 #include "game.h"
 #include "stack_cmd.h"
 #include "stack_hist.h"
+#include "view.h"
 
 static bool history_unique(t_game *g)
 {
 	t_cmd				 *cmd_last;
 	t_stack_hist *a;
 	t_stack_hist *b;
-
-	a = copy_stack_to_hist(g->a);
-	b = copy_stack_to_hist(g->b);
-
+	
+	//printf("%s_______%d\n", get_move_txt(g->entry->move), g->entry->pos);
+	a = stack_to_hist(g->a);
+	b = stack_to_hist(g->b);
+	//print_stacks_line(g->a, g->b);
+	//print_hists_line(a, b);
 	cmd_last = g->entry;
 	while (cmd_last)
 	{
 		apply_move(g, get_counter(cmd_last->move)); //cancel cmd_last move
 		if (compare_hist_stack(g->a, a) && compare_hist_stack(g->b, b)) //duplicate result
 		{
+			//printf("____!!SAME!!____%d\n", cmd_last->pos - 1);
 			hist_to_stack(g->a, a);
 			hist_to_stack(g->b, b);
+			//print_stacks(g->a, g->b);
 			return false;
 		}
 		cmd_last = cmd_last->prev;
@@ -39,10 +44,9 @@ bool bt_game(t_game *g)
 {
 	t_cmd				*cand_cmd;
 	enum e_move	move;
-	static unsigned long long test = 0;
 
 	move = SA;
-	if (g->entry && g->entry->pos > 5)
+	if (g->entry && g->entry->pos > 10)
 		return false;
 	while (move <= RRR)
 	{
@@ -61,9 +65,13 @@ bool bt_game(t_game *g)
 		if (history_unique(g)) //noinfinit prevent same game before
 		{
 			if (game_is_sorted(g)) //solution found
+			{
 				return true;
+			}
 			if (bt_game(g)) //recursive call solution found
+			{
 				return true;
+			}
 		}
 
 		//reverse state of game
@@ -72,6 +80,6 @@ bool bt_game(t_game *g)
 		apply_move(g, get_counter(move));
 		++move;
 	}
-	printf("%lld\n", ++test);
+	//printf("%lld\n", ++test);
 	return false;
 }

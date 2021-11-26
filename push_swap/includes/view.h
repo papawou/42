@@ -2,7 +2,13 @@
 # define VIEW_H
 
 #include "stack.h"
+#include "stack_hist.h"
+#include "stack_cmd.h"
 
-void print_stack(t_stack *sA, t_stack *sB);
-
+void print_stacks(t_stack *sA, t_stack *sB);
+void print_hist_line(t_stack_hist *hist);
+void print_stack(t_stack *s, bool as_line);
+void print_stacks_line(t_stack *sA, t_stack *sB);
+void print_hists_line(t_stack_hist *A, t_stack_hist *B);
+char	*get_move_txt(enum e_move move);
 #endif

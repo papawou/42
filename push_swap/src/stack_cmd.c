@@ -30,7 +30,7 @@ static bool cmd_push(t_stack *src, t_stack *dst)
 	return true;
 }
 
-static bool cmd_rotate(t_stack *stack) //if stack->size == 2 same as swap
+static bool cmd_rotate(t_stack *stack)
 {
 	t_stack_elem *head;
 
@@ -85,8 +85,7 @@ bool apply_move(t_game *g, enum e_move move)
 		test += cmd_rotate(g->b);
 		return  test;
 	}
-
-	//if (move == RRR)
+	//(move == RRR)
 	test += cmd_rrotate(g->a);
 	test += cmd_rrotate(g->b);
 	return test;
@@ -106,9 +105,7 @@ t_cmd *create_cmd(enum e_move move, t_cmd *prev)
 
 enum e_move get_counter(const enum e_move move)
 {
-	//prevent infinite loop
-	//opt_counter
-	//opt use bt generate different counter? 
+	//opt ?use bt generate different counter
 	if (move == SA)
 		return (SA);
 	if (move == SB)
@@ -127,6 +124,5 @@ enum e_move get_counter(const enum e_move move)
 		return (RB);
 	if (move == RR)
 		return (RRR);
-	//if (move == RRR)
-	return (RR);
+	return (RR); //move == RRR
 }

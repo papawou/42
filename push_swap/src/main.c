@@ -6,26 +6,43 @@
 #include "game.h"
 #include "bcktrack.h"
 #include <stdio.h>
+#include "stack_hist.h"
+#include <time.h> 
 
 int	main()
 {
 	t_game *g;
 	
 	g = create_game();
+	/*
 
-/*
-	stack_push(game->a, create_elem(5));
-	stack_push(game->a, create_elem(15));
-	stack_push(game->b, create_elem(-20));
-	stack_push(game->b, create_elem(50));
-	stack_push(game->a, create_elem(-10));
-	stack_push(game->a, create_elem(0));
+	PA != PB
+
+	*/
+	stack_push(g->a, create_elem(-564));
+	stack_push(g->a, create_elem(9));
+	stack_push(g->a, create_elem(1100));
+	
+	stack_push(g->b, create_elem(150));
+	stack_push(g->a, create_elem(-150));
+	stack_push(g->a, create_elem(7415));
+	stack_push(g->a, create_elem(-70));
+	
 	//25 work
 	//25 doenst work
-*/
+	time_t begin = time( NULL );
+	print_stacks(g->a, g->b);
+
+	printf("res: %d - ", bt_game(g));
+
+	printf("%d\n", g->entry->pos);
+	print_stacks(g->a, g->b);
+	time_t end = time(NULL);
+	unsigned long secondes = (unsigned long) difftime( end, begin );
+  printf( "Finished in %ld sec\n", secondes);
+}
 
 	/* to test
-
 	bt_game
 
 	apply_cmd(get_counter cancel move)
@@ -34,22 +51,8 @@ int	main()
 	copy_stack_to_hist
 	hist_to_stack
 
-	//cmd
+	//cmd]
 	create_cmd
 	//
 	game_is_sorted
 	*/
-	
-	stack_push(g->a, create_elem(5));
-	stack_push(g->a, create_elem(15));
-
-	stack_push(g->b, create_elem(-10));
-	stack_push(g->b, create_elem(-20));
-	
-	print_stack(g->a, g->b);
-
-	printf("%d\n", apply_move(g, RR));
-//	printf("%d\n", apply_move(g, get_counter(RR)));
-
-	print_stack(g->a, g->b);
-}
