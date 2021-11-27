@@ -31,7 +31,7 @@ int	main()
 	time_t begin = time( NULL );
 	print_stacks(g->a, g->b);
 
-	printf("res: %d - \n", bt_game(g));
+	printf("res: %lld - \n", bt_game_depth(g));
 
 	//printf("%d\n", g->entry->pos);
 	print_stacks(g->a, g->b);

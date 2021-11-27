@@ -108,3 +108,65 @@ unsigned long long bt_game(t_game *g)
 	}
 	return best_score;
 }
+
+unsigned long long bt_game_depth(t_game *g)
+{
+	size_t depth_pass;
+	t_cmd *cand_cmd;
+
+	depth_pass = 1;
+	cand_cmd = create_cmd(SA, g->entry);
+	g->entry = cand_cmd;
+	while (1)
+	{
+		if (cand_cmd->move > RRR)
+		{
+			if (cand_cmd->prev == NULL)
+			{
+				cand_cmd->move = SA;
+				++depth_pass;
+			}
+			else
+			{
+				g->entry = cand_cmd->prev;
+				free(cand_cmd);
+				cand_cmd = g->entry;
+				++cand_cmd->move;
+			}
+			
+			continue ;
+		}
+
+		printf("%*s : %-4s\n", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+		
+		
+		apply_move(g, cand_cmd->move);
+		
+		
+		if (cand_cmd->pos == depth_pass) //leaf
+		{
+			if(game_is_sorted(g))
+			{
+				return cand_cmd->pos;
+			}
+			apply_move(g, get_counter(cand_cmd->move));
+			++cand_cmd->move;
+		}
+		else //branch
+		{
+			cand_cmd = create_cmd(SA, g->entry);
+			g->entry = cand_cmd;
+		}
+		
+		/*
+		SA
+		PB
+		SA SA
+			 PB
+		PB SA
+			 PB
+		...
+		*/
+	}
+	return 0;
+}
