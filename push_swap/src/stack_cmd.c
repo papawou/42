@@ -98,6 +98,7 @@ t_cmd *create_cmd(enum e_move move, t_cmd *prev)
 	out = malloc(sizeof(t_cmd));
 	out->move = move;
 	out->prev = prev;
+	out->pos = 1;
 	if (prev)
 		out->pos = out->prev->pos + 1;
 	return (out);

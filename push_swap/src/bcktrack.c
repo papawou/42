@@ -40,46 +40,71 @@ static bool history_unique(t_game *g)
 	return true;
 }
 
-bool bt_game(t_game *g)
+unsigned long long bt_game(t_game *g)
 {
+	static unsigned long long best_score = 0;
 	t_cmd				*cand_cmd;
-	enum e_move	move;
 
-	move = SA;
-	if (g->entry && g->entry->pos > 10)
-		return false;
-	while (move <= RRR)
+	if (game_is_sorted(g))
 	{
-		if (g->entry  && g->entry->move == get_counter(move) && ++move) //opt_counter
+		printf("ALREADY SORTED\n");
+		return 0;
+	}
+	cand_cmd = create_cmd(SA, g->entry);
+	g->entry = cand_cmd;
+	while (cand_cmd != NULL)
+	{
+		if (cand_cmd->move > RRR)
+		{ //exit branch
+			g->entry = g->entry->prev;
+			free(cand_cmd);
+			cand_cmd = g->entry;
+			if (cand_cmd == NULL) //dead end no solutio foudn
+				break ;
+			apply_move(g, get_counter(cand_cmd->move));
+			++cand_cmd->move;
 			continue ;
-		//history comp
-		//	rotate * len == counter || rrotate
-		//	rotate * len - n == counter (rrotate can do same with less move)
-		if(!apply_move(g, move) && ++move) //opt_move_no_effect
+		}
+		
+		printf("%*s : %-4s", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+		if (g->entry->prev && g->entry->prev->move == get_counter(cand_cmd->move) && ++cand_cmd->move) //opt_counter
+		{
+			printf("%s", "|\n");
+			continue ;		
+		}
+		if(!apply_move(g, cand_cmd->move) && ++cand_cmd->move) //opt_move_no_effect
+		{
+			printf("%s", "||\n");
 			continue ;
-
-		//register new cmd
-		cand_cmd = create_cmd(move, g->entry);
-		g->entry = cand_cmd;
-
+		}
+		
 		if (history_unique(g)) //noinfinit prevent same game before
 		{
 			if (game_is_sorted(g)) //solution found
 			{
-				return true;
+				best_score = cand_cmd->pos;
+				printf("%lld\n", best_score);
+				
+				apply_move(g, get_counter(cand_cmd->move)); //stop branch
+				cand_cmd->move = RRR + 1;
+				continue; 
 			}
-			if (bt_game(g)) //recursive call solution found
+			if (best_score == 0 || cand_cmd->pos + 1 < best_score) //continue branch
 			{
-				return true;
+				cand_cmd = create_cmd(SA, g->entry);
+				g->entry = cand_cmd;
+				printf("%s %d\n", "->", g->entry->pos);
+				continue ;
 			}
 		}
-
-		//reverse state of game
-		g->entry = g->entry->prev;
-		free(cand_cmd);
-		apply_move(g, get_counter(move));
-		++move;
+		else
+		{
+			printf("%s", "|||");
+		}
+		printf("\n");
+		//test next leaf of branch
+		apply_move(g, get_counter(cand_cmd->move));
+		++cand_cmd->move;
 	}
-	//printf("%lld\n", ++test);
-	return false;
+	return best_score;
 }

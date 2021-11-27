@@ -19,23 +19,21 @@ int	main()
 	PA != PB
 
 	*/
-	stack_push(g->a, create_elem(-564));
-	stack_push(g->a, create_elem(9));
-	stack_push(g->a, create_elem(1100));
 	
-	stack_push(g->b, create_elem(150));
-	stack_push(g->a, create_elem(-150));
-	stack_push(g->a, create_elem(7415));
-	stack_push(g->a, create_elem(-70));
+	stack_push(g->a, create_elem(5));
+	stack_push(g->a, create_elem(4));
+	
+	stack_push(g->a, create_elem(9));
+	stack_push(g->a, create_elem(3));
 	
 	//25 work
 	//25 doenst work
 	time_t begin = time( NULL );
 	print_stacks(g->a, g->b);
 
-	printf("res: %d - ", bt_game(g));
+	printf("res: %d - \n", bt_game(g));
 
-	printf("%d\n", g->entry->pos);
+	//printf("%d\n", g->entry->pos);
 	print_stacks(g->a, g->b);
 	time_t end = time(NULL);
 	unsigned long secondes = (unsigned long) difftime( end, begin );

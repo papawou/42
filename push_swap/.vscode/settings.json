@@ -5,6 +5,7 @@
 		"game.h": "c",
 		"bcktrack.h": "c",
 		"system_error": "c",
-		"stack_hist.h": "c"
+		"stack_hist.h": "c",
+		"*.tcc": "c"
 	}
 }

@@ -3,6 +3,6 @@
 
 #include "game.h"
 
-bool bt_game(t_game *g);
+unsigned long long bt_game(t_game *g);
 
 #endif
