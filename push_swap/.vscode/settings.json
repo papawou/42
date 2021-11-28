@@ -6,6 +6,7 @@
 		"bcktrack.h": "c",
 		"system_error": "c",
 		"stack_hist.h": "c",
-		"*.tcc": "c"
+		"*.tcc": "c",
+		"random": "c"
 	}
 }

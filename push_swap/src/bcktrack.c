@@ -66,15 +66,15 @@ unsigned long long bt_game(t_game *g)
 			continue ;
 		}
 		
-		printf("%*s : %-4s", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+		//printf("%*s : %-4s", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
 		if (g->entry->prev && g->entry->prev->move == get_counter(cand_cmd->move) && ++cand_cmd->move) //opt_counter
 		{
-			printf("%s", "|\n");
+			//printf("%s", "|\n");
 			continue ;		
 		}
 		if(!apply_move(g, cand_cmd->move) && ++cand_cmd->move) //opt_move_no_effect
 		{
-			printf("%s", "||\n");
+			//printf("%s", "||\n");
 			continue ;
 		}
 		
@@ -93,15 +93,15 @@ unsigned long long bt_game(t_game *g)
 			{
 				cand_cmd = create_cmd(SA, g->entry);
 				g->entry = cand_cmd;
-				printf("%s %d\n", "->", g->entry->pos);
+				//printf("%s %d\n", "->", g->entry->pos);
 				continue ;
 			}
 		}
 		else
 		{
-			printf("%s", "|||");
+		//	printf("%s", "|||");
 		}
-		printf("\n");
+	//	printf("\n");
 		//test next leaf of branch
 		apply_move(g, get_counter(cand_cmd->move));
 		++cand_cmd->move;
@@ -111,53 +111,7 @@ unsigned long long bt_game(t_game *g)
 
 unsigned long long bt_game_depth(t_game *g)
 {
-	size_t depth_pass;
-	t_cmd *cand_cmd;
-
-	depth_pass = 1;
-	cand_cmd = create_cmd(SA, g->entry);
-	g->entry = cand_cmd;
-	while (1)
-	{
-		if (cand_cmd->move > RRR)
-		{
-			if (cand_cmd->prev == NULL)
-			{
-				cand_cmd->move = SA;
-				++depth_pass;
-			}
-			else
-			{
-				g->entry = cand_cmd->prev;
-				free(cand_cmd);
-				cand_cmd = g->entry;
-				++cand_cmd->move;
-			}
-			
-			continue ;
-		}
-
-		printf("%*s : %-4s\n", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
-		
-		
-		apply_move(g, cand_cmd->move);
-		
-		
-		if (cand_cmd->pos == depth_pass) //leaf
-		{
-			if(game_is_sorted(g))
-			{
-				return cand_cmd->pos;
-			}
-			apply_move(g, get_counter(cand_cmd->move));
-			++cand_cmd->move;
-		}
-		else //branch
-		{
-			cand_cmd = create_cmd(SA, g->entry);
-			g->entry = cand_cmd;
-		}
-		
+	
 		/*
 		SA
 		PB
@@ -167,6 +121,68 @@ unsigned long long bt_game_depth(t_game *g)
 			 PB
 		...
 		*/
+	size_t depth_pass;
+	t_cmd *cand_cmd;
+
+	depth_pass = 1;
+	cand_cmd = create_cmd(SA, g->entry);
+	g->entry = cand_cmd;
+	while (1)
+	{
+		
+		if (cand_cmd->move > RRR) //end of leaf || branch
+		{
+			if (cand_cmd->prev == NULL)
+			{
+				printf("depth done: %ld\n", depth_pass);
+				cand_cmd->move = SA;
+				++depth_pass;
+			}
+			else //rollback + set_next
+			{
+				g->entry = cand_cmd->prev;
+				free(cand_cmd);
+				cand_cmd = g->entry;
+				apply_move(g, get_counter(cand_cmd->move));
+			  //printf("%*s - %-4s\n", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+				++cand_cmd->move;
+			}
+			continue ;
+		}
+
+		if (cand_cmd->prev && cand_cmd->prev->move == get_counter(cand_cmd->move))
+		{
+			++cand_cmd->move ;
+			continue ;
+		}
+
+		if(!apply_move(g, cand_cmd->move)) //no register if apply move useless
+		{
+			++cand_cmd->move ;
+			continue ;
+		}
+		else
+		{
+		//	printf("%*s : %-4s\n", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+		}
+
+		if (cand_cmd->pos == depth_pass) //test depth
+		{
+			if(game_is_sorted(g))
+			{
+				print_cmd(g->entry);
+				return cand_cmd->pos;
+			}
+			apply_move(g, get_counter(cand_cmd->move));
+		//	printf("%*s - %-4s\n", cand_cmd->pos * 4, "", get_move_txt(cand_cmd->move));
+			++cand_cmd->move;
+		}
+		else //create new leaf
+		{
+			cand_cmd = create_cmd(SA, g->entry);
+			g->entry = cand_cmd;
+		}
+
 	}
 	return 0;
 }

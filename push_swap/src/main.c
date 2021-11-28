@@ -20,19 +20,23 @@ int	main()
 
 	*/
 	
+	stack_push(g->a, create_elem(-8));
+	stack_push(g->a, create_elem(8956));
+	stack_push(g->a, create_elem(8));
+	stack_push(g->a, create_elem(20));
+	stack_push(g->a, create_elem(-1));
+	stack_push(g->a, create_elem(3));
+	
 	stack_push(g->a, create_elem(5));
 	stack_push(g->a, create_elem(4));
 	
-	stack_push(g->a, create_elem(9));
-	stack_push(g->a, create_elem(3));
-	
+	stack_push(g->a, create_elem(-10));
 	//25 work
 	//25 doenst work
 	time_t begin = time( NULL );
 	print_stacks(g->a, g->b);
 
 	printf("res: %lld - \n", bt_game_depth(g));
-
 	//printf("%d\n", g->entry->pos);
 	print_stacks(g->a, g->b);
 	time_t end = time(NULL);

@@ -30,6 +30,15 @@ char	*get_move_txt(enum e_move move)
 	return "!!!!MOVE_TXT_ERROR";
 }
 
+void print_cmd(t_cmd *entry)
+{
+	while(entry)
+	{
+		printf("%s <- ", get_move_txt(entry->move));
+		entry = entry->prev;
+	}
+}
+
 void print_hist_line(t_stack_hist *hist)
 {
 	size_t i = hist->len;
