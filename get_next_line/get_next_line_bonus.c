@@ -75,7 +75,8 @@ char	*get_next_line(int fd)
 	static t_book *entry_book = NULL;
 	t_page				*entry_page;
 	char					*buf_cursor;
-	t_book				*book; 
+	t_book				*book;
+	char					*out;
 
 	if (fd < 0)
 		return (NULL);
@@ -85,11 +86,14 @@ char	*get_next_line(int fd)
 		return NULL;
 	buf_cursor = ft_strchr(book->buf, '\n');
 	if (*buf_cursor != '\n')
-		return gen_out(book->buf, entry_page, (buf_cursor - book->buf) + read_book(&entry_page, fd));
+		out = gen_out(book->buf, entry_page, (buf_cursor - book->buf) + read_book(&entry_page, fd));
 	else if(*buf_cursor)
-		return gen_out(book->buf, entry_page, buf_cursor - book->buf + 1);
+		out = gen_out(book->buf, entry_page, buf_cursor - book->buf + 1);
 	else
 		return (NULL);
+	if (book->buf[0] == 0)
+		remove_book(&entry_book, book);
+	return (out);
 }
 
 /*

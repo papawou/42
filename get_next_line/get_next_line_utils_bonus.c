@@ -82,3 +82,22 @@ char *cpyn_book(char *out, size_t out_size, t_page **page)
 	}
 	return (*page)->buf + i;
 }
+
+void remove_book(t_book **entry_book, t_book *book)
+{
+	t_book *tmp;
+
+	if (book == NULL)
+		return ;	
+	if (*entry_book == book)
+	{
+		*entry_book = book->next;
+		free(book);
+		return ;
+	}
+	tmp = *entry_book;
+	while (tmp->next != book)
+		tmp = tmp->next;
+	tmp->next = book->next;
+	free(book);
+}
