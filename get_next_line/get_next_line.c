@@ -50,6 +50,8 @@ char	*get_next_line(int fd)
 	t_page			*entry_page;
 	char				*buf_cursor;
 
+	if (fd < 0)
+		return (NULL);
 	entry_page = NULL;
 	buf_cursor = ft_strchr(buf, '\n');
 	if (*buf_cursor != '\n')

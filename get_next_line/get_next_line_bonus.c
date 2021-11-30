@@ -1,6 +1,32 @@
-#include <sys/types.h>
 #include <stdlib.h>
-#include "get_next_line.h"
+#include <sys/types.h>
+#include "get_next_line_bonus.h"
+#include <stdio.h>
+
+static t_book *create_book(const int fd)
+{
+	t_book *book;
+
+	book = (t_book *) malloc(sizeof(t_book));
+	if (book == NULL)
+		return (NULL);
+	book->fd = fd;
+	book->buf[0] = 0;
+	book->next = NULL;
+	return (book);
+}
+
+static t_book *get_fd_book(t_book **book, const int fd)
+{
+	while (*book)
+	{
+		if ((*book)->fd == fd)
+			return (*book);
+		book = &(*book)->next;
+	}
+	*book = create_book(fd);
+	return (*book);
+}
 
 static void fill_buff(char *buf, char *cursor)
 {
@@ -46,16 +72,22 @@ static char *gen_out(char *buf, t_page *entry_page, size_t out_size)
 
 char	*get_next_line(int fd)
 {
-	static char *bufs[4096][BUFFER_SIZE + 1];
-	t_page			*entry_page;
-	char				*buf_cursor;
+	static t_book *entry_book = NULL;
+	t_page				*entry_page;
+	char					*buf_cursor;
+	t_book				*book; 
 
+	if (fd < 0)
+		return (NULL);
 	entry_page = NULL;
-	buf_cursor = ft_strchr(buf, '\n');
+	book = get_fd_book(&entry_book, fd);
+	if (book == NULL)
+		return NULL;
+	buf_cursor = ft_strchr(book->buf, '\n');
 	if (*buf_cursor != '\n')
-		return gen_out(buf, entry_page, (buf_cursor - buf) + read_book(&entry_page, fd));
+		return gen_out(book->buf, entry_page, (buf_cursor - book->buf) + read_book(&entry_page, fd));
 	else if(*buf_cursor)
-		return gen_out(buf, entry_page, buf_cursor - buf + 1);
+		return gen_out(book->buf, entry_page, buf_cursor - book->buf + 1);
 	else
 		return (NULL);
 }
