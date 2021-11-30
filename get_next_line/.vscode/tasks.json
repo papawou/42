@@ -7,14 +7,14 @@
       "args": [
 
         "-fdiagnostics-color=always",
-				"-D BUFFER_SIZE=248",
+				"-D", "BUFFER_SIZE=248",
         "-g",
         "*.c",
         "-o",
         "a.out"
       ],
       "options": {
-        "cwd": "${fileDirname}"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": [
         "$gcc"

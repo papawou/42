@@ -1,92 +1,80 @@
-#include <stdlib.h>
 #include <sys/types.h>
-#include "get_next_line_bonus.h"
+#include <stdlib.h>
+#include "get_next_line.h"
 
-t_book *create_book(const int fd)
+static void fill_buff(char *buf, char *cursor)
 {
-	t_book *book;
+	size_t i;
 
-	book = (t_book *) malloc(sizeof(t_book));
-	if (book == NULL)
-		return (NULL);
-	book->fd = fd;
-	book->entry_page = NULL;
-	book->entry_cursor = NULL;
-	book->len_line = 0;
-	book->next = NULL;
-	return (book);
-}
-
-t_book *get_fd_book(t_book **book, const int fd)
-{
-	while (*book)
+	i = 0;
+	while(cursor && cursor[i])
 	{
-		if ((*book)->fd == fd)
-			return (*book);
-		book = &(*book)->next;
+		buf[i] = cursor[i];
+		++i;
 	}
-	*book = create_book(fd);
-	return (*book);
+	buf[i] = 0;
 }
 
-char get_next_c_book(t_page **page, char **cursor)
+static char *gen_out(char *buf, t_page *entry_page, size_t out_size)
 {
-	t_page *tmp_page;
-	char c;
-	if (**cursor == 0)
-	{
-		tmp_page = *page;
-    *page = (*page)->next;
-		free_page(tmp_page);
-		if (*page)
-			*cursor = (*page)->content;
-		else
-		{
-			*cursor = NULL;
-			return 0;
-		}
-	}
-	c = **cursor;
-	*cursor = *cursor + 1;
-	return (c);
-}
-
-char *gen_out(t_page **entry_page, char **entry_cursor, size_t len_out)
-{
-	char	*out;
+	char		*cursor_page;
+	char		*out;
 	size_t	i;
 
-	if (len_out < 1)
+	if (out_size < 1)
 		return (NULL);
-	out = malloc(len_out + 1);
+	out = malloc(out_size + 1);
 	if (out == NULL)
 		return (NULL);
-	out[len_out] = 0;
+	out[out_size] = 0;
 	i = 0;
-	while (i < len_out)
-		out[i++] = get_next_c_book(entry_page, entry_cursor);
-	return (out); 
+	while (buf[i] && i < out_size)
+	{
+		out[i] = buf[i];
+		++i;
+	}
+	if (entry_page)
+	{
+		cursor_page = cpyn_book(out + i, out_size - i, &entry_page);
+		fill_buff(buf, cursor_page);
+		free(entry_page);
+	}
+	else
+		fill_buff(buf, buf + i);
+	return (out);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_book *entry_book = NULL;
-	char					*out;
-	t_book				*c_book;
-	size_t				next_line;
+	static char *bufs[4096][BUFFER_SIZE + 1];
+	t_page			*entry_page;
+	char				*buf_cursor;
 
-	c_book = get_fd_book(&entry_book, fd);
-	if (c_book == NULL)
+	entry_page = NULL;
+	buf_cursor = ft_strchr(buf, '\n');
+	if (*buf_cursor != '\n')
+		return gen_out(buf, entry_page, (buf_cursor - buf) + read_book(&entry_page, fd));
+	else if(*buf_cursor)
+		return gen_out(buf, entry_page, buf_cursor - buf + 1);
+	else
 		return (NULL);
-	if (c_book->entry_page == NULL)
-	{
-		c_book->len_line = gen_page(&c_book->entry_page, fd);
-		if (c_book->len_line < 1)
-			return (NULL);
-		c_book->entry_cursor = c_book->entry_page->content;
-	}
-	next_line = read_book(c_book->entry_page, c_book->entry_cursor, &c_book->len_line, fd);
-	out = gen_out(&c_book->entry_page, &c_book->entry_cursor, c_book->len_line - next_line);
-	c_book->len_line = next_line;
-	return (out);
 }
+
+/*
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(void)
+{
+	int fd = open("./test", O_RDONLY);
+
+	char *s;
+	s = get_next_line(fd);
+	while(s)
+	{
+		printf("%s", s);
+		s = get_next_line(fd);
+	}
+	return 0;
+}
+*/

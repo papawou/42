@@ -1,16 +1,10 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+
 #include "get_next_line.h"
 
-void free_page(t_page *page)
-{
-	if (page == NULL)
-		return ;
-	free(page->content);
-	free(page);
-}
-
-char * ft_strchr(const char *src, const char c)
+char	*ft_strchr(const char *src, const char c)
 {
 	while (*src)
 	{
@@ -18,63 +12,73 @@ char * ft_strchr(const char *src, const char c)
 			return (char *) src;
 		++src;
 	}
-	return (NULL);
+	return (char *) src;
 }
 
-t_page *gen_empty_page()
-{
-	t_page *page;
-
-	page = malloc(sizeof(t_page));
-	if (page == NULL)
-		return NULL;
-	page->content = (char *) malloc(BUFFER_SIZE + 1);
-	if (page->content == NULL)
-	{
-		free(page);
-		return NULL;
-	}
-	page->content[BUFFER_SIZE] = 0;
-	page->next = NULL;
-	return (page);
-}
-
-ssize_t gen_page(t_page **page, const int fd)
+size_t gen_page(t_page **page, const int fd)
 {
 	ssize_t readed_bytes;
 
-	*page = gen_empty_page();
-	
+//init
+	*page = malloc(sizeof(t_page));
 	if (*page == NULL)
-		return (0);
-	readed_bytes = read(fd, (*page)->content, BUFFER_SIZE);
+		return 0;
+	(*page)->buf[BUFFER_SIZE] = 0;
+	(*page)->next = NULL;
+	readed_bytes = read(fd, (*page)->buf, BUFFER_SIZE);
 	if (readed_bytes < 1)
 	{
-		free_page(*page);
+		free(*page);
 		*page = NULL;
 	}
 	else
-		(*page)->content[readed_bytes] = 0;
+		(*page)->buf[readed_bytes] = 0;
 	return (readed_bytes);
 }
 
-size_t	read_book(t_page *page, char *cursor, ssize_t *len_line, const int fd)
+size_t	read_book(t_page **page, const int fd)
 {
+	size_t	out_size;
+	t_page 	*tmp_page;
 	char		*n_pos;
 	ssize_t	readed_bytes;
-
-	readed_bytes = *len_line;
+	
+	out_size = 0;
+	readed_bytes = gen_page(page, fd);
+	if (readed_bytes < 1)
+		return (0);
+	out_size += readed_bytes;
+	tmp_page = *page;
 	while (1)
 	{
-		n_pos = ft_strchr(cursor, '\n');
-		if (n_pos != NULL)
-			return readed_bytes - (n_pos - cursor + 1);
-		readed_bytes = gen_page(&page->next, fd);
+		n_pos = ft_strchr(tmp_page->buf, '\n');
+		if (*n_pos == '\n')
+			return out_size - ((tmp_page->buf + readed_bytes) - n_pos) + 1;
+		readed_bytes = gen_page(&tmp_page->next, fd);
 		if (readed_bytes < 1)
-			break ;
-		*len_line += readed_bytes;
-		page = page->next;
-		cursor = page->content;
+			return (out_size);
+		out_size += readed_bytes;
+		tmp_page = tmp_page->next;
 	}
-	return (0);
+}
+
+char *cpyn_book(char *out, size_t out_size, t_page **page)
+{
+	t_page	*tmp_page;
+	size_t	i;
+
+	i = 0;
+	while (out_size--)
+	{
+		if ((*page)->buf[i] == 0)
+		{
+			i = 0;
+			tmp_page = *page;
+			*page = (*page)->next;
+			free(tmp_page);
+		}
+		*out = (*page)->buf[i++];
+		++out;
+	}
+	return (*page)->buf + i;
 }

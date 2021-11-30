@@ -2,70 +2,79 @@
 #include <stdlib.h>
 #include "get_next_line.h"
 
-char	get_next_c_book(t_page **page, char **cursor)
+static void fill_buff(char *buf, char *cursor)
 {
-	t_page *tmp_page;
-	char c;
-	if (**cursor == 0)
+	size_t i;
+
+	i = 0;
+	while(cursor && cursor[i])
 	{
-		tmp_page = *page;
-    *page = (*page)->next;
-		free_page(tmp_page);
-		if (*page)
-			*cursor = (*page)->content;
-		else
-		{
-			*cursor = NULL;
-			return 0;
-		}
+		buf[i] = cursor[i];
+		++i;
 	}
-	c = **cursor;
-	*cursor = *cursor + 1;
-	return (c);
+	buf[i] = 0;
 }
 
-char *gen_out(t_page **entry_page, char **entry_cursor, size_t len_out)
+static char *gen_out(char *buf, t_page *entry_page, size_t out_size)
 {
-	char	*out;
+	char		*cursor_page;
+	char		*out;
 	size_t	i;
 
-	if (len_out < 1)
+	if (out_size < 1)
 		return (NULL);
-	out = malloc(len_out + 1);
+	out = malloc(out_size + 1);
 	if (out == NULL)
 		return (NULL);
-	out[len_out] = 0;
+	out[out_size] = 0;
 	i = 0;
-	while (i < len_out)
-		out[i++] = get_next_c_book(entry_page, entry_cursor);
-	return (out); 
+	while (buf[i] && i < out_size)
+	{
+		out[i] = buf[i];
+		++i;
+	}
+	if (entry_page)
+	{
+		cursor_page = cpyn_book(out + i, out_size - i, &entry_page);
+		fill_buff(buf, cursor_page);
+		free(entry_page);
+	}
+	else
+		fill_buff(buf, buf + i);
+	return (out);
 }
 
 char	*get_next_line(int fd)
 {
-	static int 		_fd = 0;
-	static t_page *entry_page = NULL;
-	static char   *entry_cursor = NULL;
-	static ssize_t len_line = 0;
-	char *out;
-	size_t next_line;
+	static char	buf[BUFFER_SIZE + 1] = "";
+	t_page			*entry_page;
+	char				*buf_cursor;
 
-	if (_fd != fd)
-	{
-		_fd = fd;
-		free_page(entry_page);
-		entry_page = NULL;
-		entry_cursor = NULL;
-	}
-	if (entry_page == NULL) //first read
-	{
-		len_line = gen_page(&entry_page, fd);
-		if (len_line < 1)
-			return (NULL);
-		entry_cursor = entry_page->content;
-	}
-	next_line = read_book(entry_page, entry_cursor, &len_line, fd);
-	out = gen_out(&entry_page, &entry_cursor, len_line - next_line);
-	len_line = next_line;
-	return (out);
+	entry_page = NULL;
+	buf_cursor = ft_strchr(buf, '\n');
+	if (*buf_cursor != '\n')
+		return gen_out(buf, entry_page, (buf_cursor - buf) + read_book(&entry_page, fd));
+	else if(*buf_cursor)
+		return gen_out(buf, entry_page, buf_cursor - buf + 1);
+	else
+		return (NULL);
 }
+
+/*
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(void)
+{
+	int fd = open("./test", O_RDONLY);
+
+	char *s;
+	s = get_next_line(fd);
+	while(s)
+	{
+		printf("%s", s);
+		s = get_next_line(fd);
+	}
+	return 0;
+}
+*/
