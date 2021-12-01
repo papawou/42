@@ -3,7 +3,7 @@
 
 #include <sys/types.h>
 
-#include "stack.h"
+#include "stack/stack.h"
 
 t_stack *parse_args(char *args[], size_t len);
 

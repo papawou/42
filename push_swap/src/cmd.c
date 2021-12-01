@@ -1,9 +1,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "stack.h"
-#include "stack_swap.h"
-#include "stack_cmd.h"
+#include "stack/stack.h"
+#include "stack/swap.h"
+#include "cmd.h"
 #include "game.h"
 
 static bool cmd_swap(t_stack *stack)

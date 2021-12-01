@@ -1,5 +1,24 @@
 #include <stdlib.h>
-#include "stack.h"
+#include "stack/stack.h"
+
+void set_idx_target(t_stack *A)
+{
+	t_stack_elem *tmp_elem;
+	t_stack_elem *tmp_target;
+
+	tmp_elem = A->head;
+	while(tmp_elem)
+	{
+		tmp_target = A->head;
+		while (tmp_target)
+		{
+			if (tmp_elem->value < tmp_target->value)
+				++tmp_target->idx_target;
+			tmp_target = tmp_target->prev;
+		}
+		tmp_elem = tmp_elem->prev;
+	}
+}
 
 static int	ft_atoi(char *s)
 {
@@ -28,5 +47,6 @@ t_stack *parse_args(char *args[], size_t len)
 	s = create_stack();
 	while (i < len)
 		stack_push(s, create_elem(ft_atoi(args[i++])));
+	set_idx_target(s);
 	return (s);
 }

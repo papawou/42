@@ -1,9 +1,9 @@
 #ifndef VIEW_H
 # define VIEW_H
 
-#include "stack.h"
-#include "stack_hist.h"
-#include "stack_cmd.h"
+#include "stack/stack.h"
+#include "hist.h"
+#include "cmd.h"
 
 void print_stacks(t_stack *sA, t_stack *sB);
 void print_hist_line(t_stack_hist *hist);

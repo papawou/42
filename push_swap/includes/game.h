@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-#include "stack.h"
-#include "stack_cmd.h"
+#include "stack/stack.h"
+#include "cmd.h"
 
 typedef struct s_cmd t_cmd;
 

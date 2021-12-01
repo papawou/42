@@ -1,5 +1,5 @@
-#ifndef STACK_H
-# define STACK_H
+#ifndef STACK_STACK_H
+# define STACK_STACK_H
 
 #include <stdbool.h>
 
@@ -8,8 +8,10 @@ typedef struct s_stack t_stack;
 typedef struct s_stack_elem
 {
 	int									value;
-	t_stack							*stack;
 
+	int									idx_target; //algorithm defined
+
+	t_stack							*stack;
 	struct s_stack_elem	*next;
 	struct s_stack_elem	*prev;
 } t_stack_elem;

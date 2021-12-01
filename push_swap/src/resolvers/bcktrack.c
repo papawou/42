@@ -1,13 +1,17 @@
-//obj : find less ways possible given rules
-//break : pile is sorted
-//return best track
+/*
+obj : find less ways possible given rules
+break : pile is sorted
+return best track
+*/
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "stack.h"
+
+#include "stack/stack.h"
 #include "game.h"
-#include "stack_cmd.h"
-#include "stack_hist.h"
+#include "cmd.h"
+#include "hist.h"
 #include "view.h"
 
 static bool history_unique(t_game *g)

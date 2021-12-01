@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include "stack_hist.h"
-#include "stack.h"
+
+#include "hist.h"
+#include "stack/stack.h"
 
 
 t_stack_hist	*stack_to_hist(t_stack *stack)

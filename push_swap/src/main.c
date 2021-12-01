@@ -1,24 +1,23 @@
+#include <stdio.h>
+#include <time.h> 
+
+#include "stack/swap.h"
+#include "stack/stack.h"
+
+#include "cmd.h"
+#include "hist.h"
+
 #include "parser.h"
 #include "view.h"
-#include "stack_swap.h"
-#include "stack.h"
-#include "stack_cmd.h"
 #include "game.h"
-#include "bcktrack.h"
-#include <stdio.h>
-#include "stack_hist.h"
-#include <time.h> 
+#include "resolvers/bcktrack.h"
+#include "resolvers/resolver_A.h"
 
 int	main()
 {
 	t_game *g;
 	
 	g = create_game();
-	/*
-
-	PA != PB
-
-	*/
 	
 	stack_push(g->a, create_elem(-8));
 	stack_push(g->a, create_elem(8956));
@@ -26,17 +25,15 @@ int	main()
 	stack_push(g->a, create_elem(20));
 	stack_push(g->a, create_elem(-1));
 	stack_push(g->a, create_elem(3));
-	
 	stack_push(g->a, create_elem(5));
 	stack_push(g->a, create_elem(4));
-	
 	stack_push(g->a, create_elem(-10));
-	//25 work
-	//25 doenst work
+
 	time_t begin = time( NULL );
 	print_stacks(g->a, g->b);
 
-	printf("res: %lld - \n", bt_game_depth(g));
+	printf("res: %lld - \n", resolver_a(g));
+
 	//printf("%d\n", g->entry->pos);
 	print_stacks(g->a, g->b);
 	time_t end = time(NULL);

@@ -1,5 +1,5 @@
-#ifndef BCKTRACK_H
-# define BCKTRACK_H
+#ifndef RESOLVERS_BCKTRACK_H
+# define RESOLVERS_BCKTRACK_H
 
 #include "game.h"
 

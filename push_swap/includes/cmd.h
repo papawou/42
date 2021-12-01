@@ -1,8 +1,8 @@
-#ifndef STACK_CMD_H
-#define STACK_CMD_H
+#ifndef CMD_H
+#define CMD_H
 
 #include <stdbool.h>
-#include "stack.h"
+#include "stack/stack.h"
 #include "game.h"
 
 typedef struct s_game t_game;

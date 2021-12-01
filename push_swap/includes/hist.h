@@ -1,9 +1,9 @@
-#ifndef STACK_HIST_H
-#define STACK_HIST_H
+#ifndef HIST_H
+#define HIST_H
 
 #include <sys/types.h>
 
-#include "stack.h"
+#include "stack/stack.h"
 
 typedef struct s_stack_hist
 {
