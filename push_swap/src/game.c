@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "game.h"
-#include "stack.h"
+#include "stack/stack.h"
 
 t_game *create_game()
 {

@@ -62,7 +62,7 @@ bool apply_move(t_game *g, enum e_move move)
 {
 	int test;
 
-	test = 0;
+ 	test = 0;
 	if (move == SA)
 		return cmd_swap(g->a);
 	if (move == SB)

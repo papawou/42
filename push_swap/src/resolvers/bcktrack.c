@@ -44,9 +44,9 @@ static bool history_unique(t_game *g)
 	return true;
 }
 
-unsigned long long bt_game(t_game *g)
+unsigned int bt_game(t_game *g)
 {
-	static unsigned long long best_score = 0;
+	static unsigned int best_score = 0;
 	t_cmd				*cand_cmd;
 
 	if (game_is_sorted(g))
@@ -87,7 +87,7 @@ unsigned long long bt_game(t_game *g)
 			if (game_is_sorted(g)) //solution found
 			{
 				best_score = cand_cmd->pos;
-				printf("%lld\n", best_score);
+				printf("%d\n", best_score);
 				
 				apply_move(g, get_counter(cand_cmd->move)); //stop branch
 				cand_cmd->move = RRR + 1;
@@ -113,7 +113,7 @@ unsigned long long bt_game(t_game *g)
 	return best_score;
 }
 
-unsigned long long bt_game_depth(t_game *g)
+unsigned int bt_game_depth(t_game *g)
 {
 	
 		/*

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include "stack.h"
+#include "stack/stack.h"
 //TAIL <prev- A -next> HEAD
 
 t_stack *create_stack()
@@ -24,6 +24,7 @@ t_stack_elem *create_elem(int value)
 	elem->prev = NULL;
 	elem->next = NULL;
 	elem->stack = NULL;
+	elem->idx_target = 1;
 	return (elem);
 }
 

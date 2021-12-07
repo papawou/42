@@ -6,9 +6,23 @@ while b->size
 */
 
 #include "game.h"
+#include "stack/getters.h"
+#include "resolvers/resolver_A.h"
 
-void resolver_A(t_game *g)
+unsigned int wrap_resolver(t_game *g, f_resolver resolv)
 {
+	if (game_is_sorted(g))
+		return 0;
+	return resolv(g);
+}
+
+unsigned int resolver_A(t_game *g)
+{
+	/*
+		SELECTION_SORT
+		PB a->minus ...
+		PA ...s
+	*/
 	unsigned int moves;
 	t_stack_elem *minus;
 	unsigned int idx;
@@ -17,7 +31,7 @@ void resolver_A(t_game *g)
 	while (g->a->size)
 	{
 		minus = find_minus(g->a);
-		idx = get_idx_by_elem(minus);
+		idx = idx_by_elem(minus, false);
 		moves += idx;
 		while(idx--)
 			apply_move(g, RA);

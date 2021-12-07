@@ -9,7 +9,7 @@ typedef struct s_stack_elem
 {
 	int									value;
 
-	int									idx_target; //algorithm defined
+	unsigned int									idx_target; //algorithm defined
 
 	t_stack							*stack;
 	struct s_stack_elem	*next;

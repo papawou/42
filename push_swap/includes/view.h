@@ -5,7 +5,7 @@
 #include "hist.h"
 #include "cmd.h"
 
-void print_stacks(t_stack *sA, t_stack *sB);
+void print_stacks(t_stack *sA, t_stack *sB, char *desc);
 void print_hist_line(t_stack_hist *hist);
 void print_stack(t_stack *s, bool as_line);
 void print_stacks_line(t_stack *sA, t_stack *sB);

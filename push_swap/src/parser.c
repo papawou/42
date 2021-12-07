@@ -50,3 +50,16 @@ t_stack *parse_args(char *args[], size_t len)
 	set_idx_target(s);
 	return (s);
 }
+
+t_stack *parse_int_args(int args[], size_t len)
+{
+	t_stack *s;
+	size_t i;
+
+	i = 0;
+	s = create_stack();
+	while (i < len)
+		stack_push(s, create_elem(args[i++]));
+	set_idx_target(s);
+	return (s);
+}

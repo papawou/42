@@ -10,32 +10,28 @@
 #include "parser.h"
 #include "view.h"
 #include "game.h"
-#include "resolvers/bcktrack.h"
-#include "resolvers/resolver_A.h"
+#include "resolvers/resolvers.h"
 
-int	main()
+//./push_swap `ruby -e "puts (-2..3).to_a.shuffle.join(' ')"`
+
+int	main(int argc, char *argv[])
 {
+	//int argc, char *argv[])
+	//int args[] = {3, 1, 0, -1, 2, -2};
+	
 	t_game *g;
 	
 	g = create_game();
 	
-	stack_push(g->a, create_elem(-8));
-	stack_push(g->a, create_elem(8956));
-	stack_push(g->a, create_elem(8));
-	stack_push(g->a, create_elem(20));
-	stack_push(g->a, create_elem(-1));
-	stack_push(g->a, create_elem(3));
-	stack_push(g->a, create_elem(5));
-	stack_push(g->a, create_elem(4));
-	stack_push(g->a, create_elem(-10));
-
+	g->a = parse_args(argv + 1, argc - 1);
+	//g->a = parse_int_args(args, 6);
 	time_t begin = time( NULL );
-	print_stacks(g->a, g->b);
+	print_stacks(g->a, g->b, "start");
 
-	printf("res: %lld - \n", resolver_a(g));
-
+	printf("res: %d - \n", wrap_resolver(g, &resolver_B));
 	//printf("%d\n", g->entry->pos);
-	print_stacks(g->a, g->b);
+
+	print_stacks(g->a, g->b, "exit");
 	time_t end = time(NULL);
 	unsigned long secondes = (unsigned long) difftime( end, begin );
   printf( "Finished in %ld sec\n", secondes);

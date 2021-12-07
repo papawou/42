@@ -1,9 +1,10 @@
-#include "stack.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "stack_hist.h"
-#include <stdbool.h>
-#include <stack_cmd.h>
+
+#include "stack/stack.h"
+#include "hist.h"
+#include "cmd.h"
 
 char	*get_move_txt(enum e_move move)
 {
@@ -105,7 +106,7 @@ void print_stacks_line(t_stack *sA, t_stack *sB)
 	printf("\n");
 }
 
-void print_stacks(t_stack *sA, t_stack *sB)
+void print_stacks(t_stack *sA, t_stack *sB, char *desc)
 {
 	t_stack_elem *tmpA;
 	t_stack_elem *tmpB;
@@ -116,7 +117,7 @@ void print_stacks(t_stack *sA, t_stack *sB)
 
 	tmpA = sA->head;
 	tmpB = sB->head;
-	printf("-----------------\n");
+	printf("%-s---------\n", desc);
 	
 	Aprint = sA->size >= sB->size; 
 	if (sA->size > sB->size)

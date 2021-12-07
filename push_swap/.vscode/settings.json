@@ -9,6 +9,9 @@
 		"*.tcc": "c",
 		"random": "c",
 		"parser.h": "c",
-		"view.h": "c"
+		"view.h": "c",
+		"cmd.h": "c",
+		"resolver_a.h": "c",
+		"resolvers.h": "c"
 	}
 }

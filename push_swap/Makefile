@@ -13,7 +13,8 @@ INC_DIR := ./includes
 SRC_DIR := ./src
 OBJ_DIR := ./obj
 
-SRC := bcktrack.c  game.c  main.c  parser.c  stack.c  stack_cmd.c  stack_hist.c  stack_swap.c  view.c
+SRC := cmd.c game.c hist.c main.c parser.c resolvers/bcktrack.c resolvers/resolver_A.c stack/getters.c stack/stack.c stack/swap.c view.c resolvers/qsort.c
+
 OBJ := ${SRC:.c=.o}
 
 all : ${NAME}

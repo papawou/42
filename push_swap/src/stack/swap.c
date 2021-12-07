@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "stack/stack.h"
 
 // A -next> <prev- B
 static void swap_adj(t_stack_elem *A, t_stack_elem *B)
