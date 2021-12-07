@@ -3,17 +3,15 @@
 #include "stack/getters.h"
 #include <stdbool.h>
 #include "view.h"
-
+#include <stdio.h>
 unsigned int save_target(t_game *g, bool in_A)
 {
 	unsigned int moves;
 	
-	print_stacks(g->a, g->b, "save_target+");
 	moves = 0;
 	if (!in_A && ++moves)
 		apply_move(g, PA);
 	apply_move(g, RA);
-	print_stacks(g->a, g->b, "-save_target");
 	return moves + 1;
 }
 
@@ -34,9 +32,8 @@ unsigned int resolver_B(t_game *g)
 	unsigned int moves;
 
 	moves = 0;
-	print_stacks(g->a, g->b, "resolverB+");
-	pivot = g->a->size / 2; // 4/2 = 2 // 3/2 = 1 // 1/2 = 0 
-	while (g->b->size < pivot) //|| pivot < g->a->size
+	pivot = g->a->size / 2;
+	while (g->b->size < pivot)
 	{
 		tmp = g->a->head;
 		if (tmp->idx_target <= pivot)
@@ -45,28 +42,39 @@ unsigned int resolver_B(t_game *g)
 			apply_move(g, RA);
 		++moves;
 	}
-	print_stacks(g->a, g->b, "-resolverB");
 	return moves + q_sort(g, 1);
 }
 
-unsigned int q_sort_b(t_game *g, unsigned int stop_A) //push high branch of B to A
+unsigned int q_sort_b(t_game *g, unsigned int stop_A)
 {
 	t_stack_elem *tmp;
 	unsigned int pivot;
 	unsigned int stop_B;
 	unsigned int moves;
 
+
 	moves = 0;
+/*
+	if (g->b->size <= 5)
+	{
+		//bt_game_depth
+		moves += bt_q_sort(g);
+		while (g->b->head == g->a->tail + 1)
+			save_target(g, false);
+		g->entry = NULL;
+		if (g->b->size == 0)
+			return moves;
+	}
+*/	
 	pivot = find_pivot(g->b);
-	stop_B = g->b->size - (g->b->size / 2); 
+	stop_B = g->b->size - (g->b->size / 2);
 	
-	print_stacks(g->a, g->b, "B+");
 	while (stop_B < g->b->size)
 	{
 		tmp = g->b->head;
-		if (tmp->idx_target <= pivot) //keep in stack
+		if (tmp->idx_target <= pivot)
 		{
-			if (tmp->idx_target == g->a->tail->idx_target + 1 || tmp->idx_target == 1) //save
+			if (tmp->idx_target == g->a->tail->idx_target + 1 || tmp->idx_target == 1)
 			{
 				moves += save_target(g, false);
 				--stop_B;
@@ -79,21 +87,16 @@ unsigned int q_sort_b(t_game *g, unsigned int stop_A) //push high branch of B to
 		else if(++moves)
 			apply_move(g, PA);
 	}
-
-	print_stacks(g->a, g->b, "-B");
-
-	return moves + q_sort(g, g->a->head->idx_target); //sort child low branch
+	return moves + q_sort(g, g->a->head->idx_target);
 }
 
-unsigned int q_sort_a(t_game *g, unsigned int stop_A) //push high part of current parent to B
+unsigned int q_sort_a(t_game *g, unsigned int stop_A)
 {
 	t_stack_elem *tmp;
 	unsigned int moves;
 
 	tmp = g->a->head;
 	moves = 0;
-	
-	print_stacks(g->a, g->b, "A+");
 	while (tmp->idx_target != stop_A)
 	{
 		if (tmp->idx_target == g->a->tail->idx_target + 1 || tmp->idx_target == 1) //save
@@ -107,7 +110,6 @@ unsigned int q_sort_a(t_game *g, unsigned int stop_A) //push high part of curren
 			apply_move(g, PB);
 		tmp = g->a->head;
 	}
-	print_stacks(g->a, g->b, "-A");
 	return moves + q_sort(g, g->a->head->idx_target); //sort child high branch
 }
 

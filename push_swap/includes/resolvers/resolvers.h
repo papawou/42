@@ -13,5 +13,6 @@ unsigned int q_sort(t_game *g, unsigned int stop_A);
 unsigned int q_sort_b(t_game *g, unsigned int stop_A);
 unsigned int q_sort_a(t_game *g, unsigned int stop_A);
 unsigned int resolver_B(t_game *g);
+unsigned int bt_q_sort(t_game *g);
 
 #endif

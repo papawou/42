@@ -7,7 +7,7 @@ while b->size
 
 #include "game.h"
 #include "stack/getters.h"
-#include "resolvers/resolver_A.h"
+#include "resolvers/resolvers.h"
 
 unsigned int wrap_resolver(t_game *g, f_resolver resolv)
 {
