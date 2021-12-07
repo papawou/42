@@ -31,7 +31,7 @@ int	main(int argc, char *argv[])
 	printf("res: %d - \n", wrap_resolver(g, &resolver_B));
 	//printf("%d\n", g->entry->pos);
 
-	print_stacks(g->a, g->b, "exit");
+	//print_stacks(g->a, g->b, "exit");
 	time_t end = time(NULL);
 	unsigned long secondes = (unsigned long) difftime( end, begin );
   printf( "Finished in %ld sec\n", secondes);

@@ -52,8 +52,6 @@ unsigned int q_sort_b(t_game *g, unsigned int stop_A)
 	unsigned int stop_B;
 	unsigned int moves;
 
-
-	moves = 0;
 /*
 	if (g->b->size <= 5)
 	{
@@ -66,6 +64,7 @@ unsigned int q_sort_b(t_game *g, unsigned int stop_A)
 			return moves;
 	}
 */	
+	moves = 0;
 	pivot = find_pivot(g->b);
 	stop_B = g->b->size - (g->b->size / 2);
 	
