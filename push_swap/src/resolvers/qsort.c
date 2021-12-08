@@ -124,7 +124,7 @@ unsigned int q_sort(t_game *g, unsigned int stop_A)
 			if (g->b->head->idx_target > g->b->tail->idx_target && ++moves)
 				apply_move(g, SB);
 			moves += save_target(g, false);
-			if (g->b->size != 0)
+			if (g->b->size)
 				moves += save_target(g, false);
 		}
 		else

@@ -202,6 +202,7 @@ unsigned int bt_q_sort(t_game *g)
 			}
 			continue;
 		}
+
 		if (cand_cmd->move == RRR || cand_cmd->move == RA || cand_cmd->move == RR || cand_cmd->move == RRA)
 		{
 			++cand_cmd->move;

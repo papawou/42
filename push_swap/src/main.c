@@ -28,7 +28,7 @@ int	main(int argc, char *argv[])
 	time_t begin = time( NULL );
 	print_stacks(g->a, g->b, "start");
 
-	printf("res: %d - \n", wrap_resolver(g, &resolver_B));
+	printf("res: %d - \n", wrap_resolver(g, &bt_game_depth));
 	//printf("%d\n", g->entry->pos);
 
 	//print_stacks(g->a, g->b, "exit");
